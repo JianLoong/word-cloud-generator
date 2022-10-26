@@ -4,10 +4,9 @@ window.onload = (event) => {
     const textArea = document.getElementById("inputString");
     const button = document.getElementById("run");
     const tfIDF = document.getElementById("tfidf");
-    const spiral = document.getElementById("spiral");
     const downloadButton = document.getElementById("download");
 
-    const worker = new Worker("./worker.js" + '?' + Math.random());
+    const worker = new Worker("./worker/worker.js" + '?' + Math.random());
 
     const generateCloud = (
       text,
@@ -26,7 +25,8 @@ window.onload = (event) => {
         padding = 0, // amount of padding between the words (in pixels)
         rotate = 0, // a constant or function to rotate the words
         invalidation, // when this promise resolves, stop the simulation
-        colourScheme = "d3.schemeCategory10"
+        colourScheme = "d3.schemeCategory10",
+        spiral = archimedeanSpiral
       } = {}
     ) => {
       const words =
@@ -60,7 +60,7 @@ window.onload = (event) => {
           height - marginTop - marginBottom,
         ])
         .words(data)
-
+        .spiral(spiral)
         .padding(padding)
         .rotate(rotate)
         .font(fontFamily)
@@ -95,6 +95,13 @@ window.onload = (event) => {
       const selectedFontFamily = document.getElementById("fontFamily").value;
       const selectedFontScale = document.getElementById("fontScale").value;
       const selectedColourScheme = document.getElementById("colourScheme").value;
+      const noOfOrientation = document.getElementById("noOfOrientations").value;
+      const startAngle = document.getElementById("startAngle").value;
+      const endAngle = document.getElementById("endAngle").value;
+      
+      const selectedSpiral = document.querySelector('input[name="spiral"]:checked').value;
+
+
 
       if (textArea == undefined || textArea.value.length == 0)
         return;
@@ -110,7 +117,8 @@ window.onload = (event) => {
 
       worker.postMessage([words, config]);
 
-      const rotateFunction = () => { return ~~(Math.random() * 2) * 90; }
+      // https://stackoverflow.com/questions/49285933/create-rotations-from-60-to-60-in-d3-cloud
+      const rotateFunction = () => { return ~~(Math.random() * noOfOrientation) * endAngle - startAngle; };
 
       worker.onmessage = (e) => {
         const data = e.data;
@@ -119,7 +127,9 @@ window.onload = (event) => {
           height: 400,
           fontFamily: selectedFontFamily,
           colourScheme: selectedColourScheme,
-          fontScale: selectedFontScale
+          fontScale: selectedFontScale,
+          rotate: rotateFunction,
+          spiral: selectedSpiral
 
         });
 
@@ -130,8 +140,6 @@ window.onload = (event) => {
     });
 
     downloadButton.addEventListener("click", () => {
-     
-
       d3ToPng('svg', 'word-cloud', {
         background: "white"
       });
@@ -147,8 +155,8 @@ const getColourSchemeDomain = (colourSchemeString, data) => {
     case "d3.schemeCategory10": colors = d3.scaleOrdinal(d3.schemeCategory10).domain(data); break;
     case "d3.schemeDark2": colors = d3.scaleOrdinal(d3.schemeDark2).domain(data); break;
     case "d3.schemeTableau10": colors = colors = d3.scaleOrdinal(d3.schemeTableau10).domain(data); break;
-
     case "d3.schemePastel1": colors = d3.scaleOrdinal(d3.schemePastel1).domain(data); break;
+
     // Scale sequential
     case "d3.interpolateBlues": colors = d3.scaleSequential(d3.interpolateBlues).domain([0, data.length]);
       isSequential = true;
@@ -156,12 +164,8 @@ const getColourSchemeDomain = (colourSchemeString, data) => {
     case "d3.interpolateGreens": colors = d3.scaleSequential(d3.interpolateGreens).domain([0, data.length]);
       isSequential = true;
       break;
-
-
     default: return data;
   }
-
-  console.log(colors);
 
   let i = data.length - 1;
   for (let element of data) {
@@ -172,6 +176,5 @@ const getColourSchemeDomain = (colourSchemeString, data) => {
     }
     i--;
   }
-
   return data;
 }

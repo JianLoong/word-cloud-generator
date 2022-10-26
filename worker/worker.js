@@ -1,16 +1,16 @@
-importScripts("./stopwords.js")
-importScripts("./PorterStemmer1980.js");
+importScripts("../wrangling/stopwords.js")
+importScripts("../wrangling/PorterStemmer1980.js");
 
 // Stop word list - https://kavita-ganesan.com/what-are-stop-words/
 let words = "";
 
-function removeStopWords(str) {
+const removeStopWords =(str) => {
   let res = []
   let words = str.split(' ')
   for (i = 0; i < words.length; i++) {
-    word_clean = words[i].split(".").join("")
-    if (!stopWords.includes(word_clean)) {
-      res.push(word_clean)
+    cleanedWord = words[i].split(".").join("")
+    if (!stopWords.includes(cleanedWord)) {
+      res.push(cleanedWord)
     }
   }
   return (res.join(' '))
@@ -47,18 +47,12 @@ const transformData = (words, {
     return words;
 
   if (selectedTransformationMethodology == "stemming") {
-
-  
-
     let result = [];
     for (let word of words.split(" ")) {
       const stemmed = stemmer(word);
-
       result.push(stemmed);
     }
-
     return result.join(' ');
-    
   } else
     return words;
 }
