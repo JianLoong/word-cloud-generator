@@ -146,6 +146,10 @@
                                             <option value="d3.schemeCategory10">d3.schemeCategory10</option>
                                             <option value="d3.schemeDark2">d3.schemeDark2</option>
                                             <option value="d3.schemeDark2">d3.schemeTableau10</option>
+                                            <option value="d3.schemePastel1">d3.schemePastel1</option>
+                                            <option value="d3.interpolateBlues">d3.interpolateBlues</option>
+                                            <option value="d3.interpolateGreens">d3.interpolateGreens</option>
+
                                         </select>
                                     </div>
                                 </div>
@@ -221,7 +225,12 @@
                     <div class="">
                         <p></p>
                         <div id="cloud"></div>
+                        <div class="row justify-content-center">
+                            <button type="button" class="btn btn-primary d-none" id="download">Download as PNG</button>
+                        </div>
                     </div>
+                    <p></p>
+
                 </div>
                 </form>
             </div>
@@ -231,6 +240,7 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="./d3.layout.cloud.js" crossorigin="anonymous"></script>
     <script src="./main.js" crossorigin="anonymous"></script>
+    <script src="./d3-to-img.js"></script>
 </body>
 
 </html>

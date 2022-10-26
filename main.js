@@ -1,17 +1,13 @@
 window.onload = (event) => {
   if (window.Worker) {
 
-
     const textArea = document.getElementById("inputString");
-    // const rotate = document.getElementById("inputString");
-    // const fontFamily = document.getElementById("inputString");
-
     const button = document.getElementById("run");
     const tfIDF = document.getElementById("tfidf");
     const spiral = document.getElementById("spiral");
+    const downloadButton = document.getElementById("download");
 
     const worker = new Worker("./worker.js" + '?' + Math.random());
-
 
     const generateCloud = (
       text,
@@ -30,16 +26,11 @@ window.onload = (event) => {
         padding = 0, // amount of padding between the words (in pixels)
         rotate = 0, // a constant or function to rotate the words
         invalidation, // when this promise resolves, stop the simulation
-        colourScheme = d3.schemeCategory10
+        colourScheme = "d3.schemeCategory10"
       } = {}
     ) => {
       const words =
         typeof text === "string" ? text.split(/\W+/g) : Array.from(text);
-
-
-
-
-
       const data = d3
         .rollups(words, size, (w) => w)
         .sort(([, a], [, b]) => d3.descending(a, b))
@@ -47,24 +38,7 @@ window.onload = (event) => {
         .map(([key, size]) => ({ text: word(key), size }));
 
       // This is for the colour scheme
-
-      if (colourScheme == "d3.schemeDark2") {
-        colourScheme = d3.schemeDark2;
-      }
-
-      if (colourScheme === "d3.schemeCategory10") {
-        colourScheme = d3.schemeCategory10;
-      }
-
-      if (colourScheme === "d3.schemeTableau10") {
-        colourScheme = d3.schemeTableau10;
-      }
-
-      let i = 0;
-      for (let element of data) {
-        element["color"] = colourScheme[Math.floor(Math.random() * 10)]
-        i++;
-      }
+      getColourSchemeDomain(colourScheme, data);
 
       const svg = d3
         .create("svg")
@@ -108,23 +82,18 @@ window.onload = (event) => {
 
     button.addEventListener("click", () => {
 
+      downloadButton.classList.add("d-none");
+
       const svg = d3.select("svg");
       svg.selectAll("*").remove();
       svg.remove();
 
-
       const isRemoveNumbers = document.getElementById("removeNumbers").checked;
-
       const isRemoveSpecialCharacters = document.getElementById("removeSpecialCharacters").checked;
-
       const isRemoveStopWords = document.getElementById("removeStopWords").checked;
-
       const selectedTransformationMethodology = document.querySelector('input[name="transformationMethodology"]:checked').value;
-
       const selectedFontFamily = document.getElementById("fontFamily").value;
-
       const selectedFontScale = document.getElementById("fontScale").value;
-
       const selectedColourScheme = document.getElementById("colourScheme").value;
 
       if (textArea == undefined || textArea.value.length == 0)
@@ -147,26 +116,62 @@ window.onload = (event) => {
         const data = e.data;
         const a = generateCloud(data, {
           width: 500,
-          height: 500,
+          height: 400,
           fontFamily: selectedFontFamily,
           colourScheme: selectedColourScheme,
           fontScale: selectedFontScale
 
         });
 
-
         d3.select("#cloud").node().appendChild(a);
 
-        var svgData = $("svg")[0].outerHTML;
-        var svgBlob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
-        var svgUrl = URL.createObjectURL(svgBlob);
-        var downloadLink = document.createElement("a");
-        downloadLink.href = svgUrl;
-        downloadLink.download = "newesttree.svg";
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
-        document.body.removeChild(downloadLink);
+        downloadButton.classList.remove("d-none");
       };
     });
+
+    downloadButton.addEventListener("click", () => {
+     
+
+      d3ToPng('svg', 'word-cloud', {
+        background: "white"
+      });
+    })
   }
 };
+
+const getColourSchemeDomain = (colourSchemeString, data) => {
+  let colors = undefined;
+  let isSequential = false;
+  switch (colourSchemeString) {
+    // Scale ordinal
+    case "d3.schemeCategory10": colors = d3.scaleOrdinal(d3.schemeCategory10).domain(data); break;
+    case "d3.schemeDark2": colors = d3.scaleOrdinal(d3.schemeDark2).domain(data); break;
+    case "d3.schemeTableau10": colors = colors = d3.scaleOrdinal(d3.schemeTableau10).domain(data); break;
+
+    case "d3.schemePastel1": colors = d3.scaleOrdinal(d3.schemePastel1).domain(data); break;
+    // Scale sequential
+    case "d3.interpolateBlues": colors = d3.scaleSequential(d3.interpolateBlues).domain([0, data.length]);
+      isSequential = true;
+      break;
+    case "d3.interpolateGreens": colors = d3.scaleSequential(d3.interpolateGreens).domain([0, data.length]);
+      isSequential = true;
+      break;
+
+
+    default: return data;
+  }
+
+  console.log(colors);
+
+  let i = data.length - 1;
+  for (let element of data) {
+    if (isSequential == false)
+      element["color"] = colors(data[i]);
+    else {
+      element["color"] = colors(i);
+    }
+    i--;
+  }
+
+  return data;
+}
