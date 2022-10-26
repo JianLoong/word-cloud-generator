@@ -37,7 +37,7 @@ window.onload = (event) => {
         typeof text === "string" ? text.split(/\W+/g) : Array.from(text);
 
 
-     
+
 
 
       const data = d3
@@ -48,7 +48,7 @@ window.onload = (event) => {
 
       // This is for the colour scheme
 
-      if (colourScheme == "d3.schemeDark2"){
+      if (colourScheme == "d3.schemeDark2") {
         colourScheme = d3.schemeDark2;
       }
 
@@ -56,13 +56,13 @@ window.onload = (event) => {
         colourScheme = d3.schemeCategory10;
       }
 
-      if (colourScheme === "d3.schemeTableau10"){
+      if (colourScheme === "d3.schemeTableau10") {
         colourScheme = d3.schemeTableau10;
       }
 
       let i = 0;
       for (let element of data) {
-        element["color"] = colourScheme[ Math.floor(Math.random() * 10)]
+        element["color"] = colourScheme[Math.floor(Math.random() * 10)]
         i++;
       }
 
@@ -77,7 +77,7 @@ window.onload = (event) => {
         .append("g")
         .attr("transform", `translate(${marginLeft},${marginTop})`);
 
-      
+
 
       const cloud = d3.layout
         .cloud()
@@ -123,6 +123,8 @@ window.onload = (event) => {
 
       const selectedFontFamily = document.getElementById("fontFamily").value;
 
+      const selectedFontScale = document.getElementById("fontScale").value;
+
       const selectedColourScheme = document.getElementById("colourScheme").value;
 
       if (textArea == undefined || textArea.value.length == 0)
@@ -147,12 +149,23 @@ window.onload = (event) => {
           width: 500,
           height: 500,
           fontFamily: selectedFontFamily,
-          colourScheme: selectedColourScheme
-        
+          colourScheme: selectedColourScheme,
+          fontScale: selectedFontScale
+
         });
 
 
         d3.select("#cloud").node().appendChild(a);
+
+        var svgData = $("svg")[0].outerHTML;
+        var svgBlob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
+        var svgUrl = URL.createObjectURL(svgBlob);
+        var downloadLink = document.createElement("a");
+        downloadLink.href = svgUrl;
+        downloadLink.download = "newesttree.svg";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
       };
     });
   }

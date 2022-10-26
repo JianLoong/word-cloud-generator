@@ -21,6 +21,7 @@
                     <div class="card-body">
                         <form>
                             <h1>Word Cloud Generator</h1>
+                            <p>Click <a href="https://jianliew.me/projects">here</a> to return to projects page</p>
                             <div class="mb-3 form-control form-control-sm">
 
                                 <label for="exampleFormControlTextarea1" class="form-label"><strong>Please select
@@ -124,10 +125,23 @@
 
 
                                 <div class="mb-3 row">
+                                    <div class="col-sm-2 ">
+                                        <label for="exampleFormControlInput1" class="col-form-label">Font-Scale</label>
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <input type="number" class="form-control" id="fontScale" min="5" max="25"
+                                            value="10" aria-describedby="">
+                                        <div id="numberHelp" class="form-text">The base size of the font</div>
+                                    </div>
+                                </div>
+
+
+                                <div class="mb-3 row">
                                     <label for="exampleFormControlInput1"
                                         class="col-sm-2 col-form-label">Colour-Scheme</label>
                                     <div class="col-sm-10">
-                                        <select class="form-select" aria-label="Default select example" id="colourScheme">
+                                        <select class="form-select" aria-label="Default select example"
+                                            id="colourScheme">
                                             <option value="black" selected>Black - No colour scheme</option>
                                             <option value="d3.schemeCategory10">d3.schemeCategory10</option>
                                             <option value="d3.schemeDark2">d3.schemeDark2</option>
@@ -181,7 +195,15 @@
                                 <label for="exampleFormControlTextarea1" class="form-label"><strong>Please enter
                                         article:</strong></label>
 
-                                <textarea class="form-control" rows="4" placeholder="" id="inputString"></textarea>
+                                <textarea class="form-control" rows="4" placeholder="" id="inputString">Australia, officially the Commonwealth of Australia, is a sovereign country comprising the mainland of the Australian continent, the island of Tasmania, and numerous smaller islands.[13] With an area of 7,617,930 square kilometres (2,941,300 sq mi),[14] Australia is the largest country by area in Oceania and the world's sixth-largest country. Australia is the oldest,[15] flattest,[16] and driest inhabited continent,[17][18] with the least fertile soils.[19][20] It is a megadiverse country, and its size gives it a wide variety of landscapes and climates, with deserts in the centre, tropical rainforests in the north-east, and mountain ranges in the south-east.
+
+                                    The ancestors of Aboriginal Australians began arriving from south east Asia approximately 65,000 years ago, during the last ice age.[21][22] Arriving by sea, they settled the continent and had formed approximately 250 distinct language groups by the time of European settlement, maintaining some of the longest known continuing artistic and religious traditions in the world.[23] Australia's written history commenced with the European maritime exploration of Australia. The Dutch navigator Willem Janszoon was the first known European to reach Australia, in 1606. In 1770, the British explorer James Cook mapped and claimed the east coast of Australia for Great Britain, and the First Fleet of British ships arrived at Sydney in 1788 to establish the penal colony of New South Wales. The European population grew in subsequent decades, and by the end of the 1850s gold rush, most of the continent had been explored by European settlers and an additional five self-governing British colonies established. Democratic parliaments were gradually established through the 19th century, culminating with a vote for the federation of the six colonies and foundation of the Commonwealth of Australia on 1 January 1901. Australia has since maintained a stable liberal democratic political system and wealthy market economy.
+                                    
+                                    Politically, Australia is a federal parliamentary constitutional monarchy, comprising six states and ten territories. Australia's population of nearly 26 million[7] is highly urbanised and heavily concentrated on the eastern seaboard.[24] Canberra is the nation's capital, while its most populous city and financial centre is Sydney. The next four largest cities are Melbourne, Brisbane, Perth, and Adelaide. Australia's demography has been shaped by centuries of immigration: immigrants account for 30% of the country's population,[25] and almost half of Australians have at least one parent born overseas.[26] Australia's abundant natural resources and well-developed international trade relations are crucial to the country's economy, which generates its income from various sources including services, mining exports, banking, manufacturing, agriculture and international education.[27][28][29]
+                                    
+                                    Australia is a highly developed country with a high-income economy. As of 2022, it was the world's twelfth-largest economy with the ninth-highest per capita income.[30] In 2017, it ranked as fifth-highest Human Development Index.[31][32] Australia is a regional power, and has the world's thirteenth-highest military expenditure.[33] Australia ranks amongst the highest in the world for quality of life, democracy, health, education, economic freedom, civil liberties, safety, and political rights,[34] with all its major cities faring exceptionally in global comparative livability surveys.[35] It is a member of international groupings including the United Nations, the G20, the OECD, the WTO, ANZUS, AUKUS, Five Eyes, the Quad, APEC, the Pacific Islands Forum, the Pacific Community and the Commonwealth of Nations.
+
+                                </textarea>
                                 <div id="passwordHelpBlock" class="form-text">
                                     Please note that a long article may take a long processing time.
                                 </div>
