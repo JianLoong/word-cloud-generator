@@ -1,3 +1,8 @@
+# Demo
+
+Found [here](https://jianliew.me/word-cloud-generator)
+
+
 # Word Cloud Generator
 
 "Word clouds (also known as text clouds or tag clouds) work in a simple way: the more a specific word appears in a source of textual data (such as a speech, blog post, or database), the bigger and bolder it appears in the word cloud.
@@ -31,14 +36,14 @@ Depending on interest, this list will be expanded over time.
 
 Plans are in place to implement 2 stemming methodologies
 - Porter Stemming found [here](https://tartarus.org/martin/PorterStemmer/)
-- Lancaster Stemming found [here]
+- Lancaster Stemming found [here](https://www.nltk.org/_modules/nltk/stem/lancaster.html)
 
 Lemmatization will also be implemented based on the WordNet found [here](https://wordnet.princeton.edu/)
 
 # Contribution
 
-Feel free to open an issue for discussion or make a contribution to this repository. It is hosted via ``gh-pages``
+Feel free to open an issue for discussion or a contribution to this repository. It is hosted via ``gh-pages``
 
-Suggestions to the project are also welcomed but I aim to keep the project as minimalistic as possible without the need for to many external dependencies and libraries.
+Suggestions for the project are also welcomed but I aim to keep the project as minimalistic as possible without the need for too many external dependencies and libraries.
 
 
