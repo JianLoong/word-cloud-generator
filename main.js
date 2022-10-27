@@ -6,10 +6,18 @@ window.onload = (event) => {
     const tfIDF = document.getElementById("tfidf");
     const downloadButton = document.getElementById("download");
     const runningButton = document.getElementById("running");
+    const divResult = document.querySelector(".div-result");
 
     const worker = new Worker("./worker/worker.js" + '?' + Math.random());
 
     button.addEventListener("click", () => {
+
+      divResult.classList.add("d-none");
+      validations();
+
+
+      if (textArea == undefined || textArea.value.length == 0) return;
+
 
       downloadButton.classList.add("d-none");
       runningButton.classList.remove("d-none");
@@ -32,8 +40,6 @@ window.onload = (event) => {
       
       const selectedSpiral = document.querySelector('input[name="spiral"]:checked').value;
 
-      if (textArea == undefined || textArea.value.length == 0)
-        return;
 
       let words = textArea.value.toLowerCase();
 
@@ -67,6 +73,7 @@ window.onload = (event) => {
         downloadButton.classList.remove("d-none");
         button.classList.remove("d-none");
         runningButton.classList.add("d-none");
+        divResult.classList.remove("d-none");
         
       };
     });
@@ -76,6 +83,16 @@ window.onload = (event) => {
         background: "white"
       });
     })
+
+    const validations = () => {
+
+      // if(textArea.value == 0 || textArea.value === undefined)
+      //   textArea.classList.add(":invalid");;
+    
+      // return;
+    
+    }
+
   }
 };
 
@@ -96,6 +113,12 @@ const getColourSchemeDomain = (colourSchemeString, data) => {
     case "d3.interpolateGreens": colors = d3.scaleSequential(d3.interpolateGreens).domain([0, data.length]);
       isSequential = true;
       break;
+    case "d3.interpolateCool": colors = d3.scaleSequential(d3.interpolateCool).domain([0, data.length]);
+      isSequential = true;
+      break;
+    case "d3.interpolateCividis": colors = d3.scaleSequential(d3.interpolateCividis).domain([0, data.length]);
+    isSequential = true;
+    break;
     default: return data;
   }
 
@@ -111,12 +134,7 @@ const getColourSchemeDomain = (colourSchemeString, data) => {
   return data;
 }
 
-const validations = () => {
-  const textArea = document.getElementById("inputString");
 
-
-
-}
 
 const generateCloud = (
   text,
