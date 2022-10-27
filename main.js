@@ -134,8 +134,6 @@ const getColourSchemeDomain = (colourSchemeString, data) => {
   return data;
 }
 
-
-
 const generateCloud = (
   text,
   {
@@ -178,8 +176,6 @@ const generateCloud = (
   const g = svg
     .append("g")
     .attr("transform", `translate(${marginLeft},${marginTop})`);
-
-
 
   const cloud = d3.layout
     .cloud()
