@@ -118,8 +118,11 @@ const getColourSchemeDomain = (
     case "d3.schemeTableau10":
       colors = colors = d3.scaleOrdinal(d3.schemeTableau10).domain(data);
       break;
-    case "d3.schemePastel1":
-      colors = d3.scaleOrdinal(d3.schemePastel1).domain(data);
+      case "d3.schemeAccent":
+        colors = colors = d3.scaleOrdinal(d3.schemeAccent).domain(data);
+        break;
+    case "d3.schemePaired":
+      colors = d3.scaleOrdinal(d3.schemePaired).domain(data);
       break;
 
     // Scale sequential
@@ -137,6 +140,10 @@ const getColourSchemeDomain = (
       colors = d3.scaleSequential(d3.interpolateCool).domain([0, data.length]);
       isSequential = true;
       break;
+    case "d3.interpolateRdGy":
+        colors = d3.scaleSequential(d3.interpolateRdGy).domain([0, data.length]);
+        isSequential = true;
+        break;
     case "d3.interpolateCividis":
       colors = d3
         .scaleSequential(d3.interpolateCividis)
