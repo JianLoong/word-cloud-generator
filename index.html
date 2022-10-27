@@ -14,7 +14,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
         crossorigin="anonymous"></script>
-   
+
     <div class="container-fluid">
 
         <div class="row">
@@ -103,11 +103,14 @@
                                         class="col-sm-2 col-form-label">Font-family</label>
                                     <div class="col-sm-10">
                                         <select class="form-select" aria-label="Default select example" id="fontFamily">
-                                            <option value="sans-serif" selected>sans-serif</option>
-                                            <option value="impact">impact</option>
-                                            <option value="roboto-condensed">roboto-condensed</option>
-                                            <option value="Helvetica">Helvetica</option>
-                                            <option value="Futura">Futura</option>
+                                            <option value="sans-serif" style="font-family: sans-serif;"selected>sans-serif</option>
+                                            <option value="impact" style="font-family: impact;">impact</option>
+                                            <option value="roboto-condensed" style="font-family: roboto-condensed;">
+                                                roboto-condensed</option>
+                                            <option value="Helvetica" style="font-family: Helvetica;">Helvetica</option>
+                                            <option value="Futura" style="font-family: futura;">Futura</option>
+                                            <option value="Bodoni" style="font-family: bodoni;">Bodoni</option>
+                                            <option value="Bembo" style="font-family: bembo;">Bembo</option>
                                         </select>
                                     </div>
                                 </div>
@@ -128,12 +131,18 @@
                                         <select class="form-select selectpicker" aria-label="Default select example"
                                             id="colourScheme" is="ms-dropdown">
                                             <option value="black" selected>Black - No colour scheme</option>
-                                            <option value="d3.schemeCategory10" data-image="./images/category10.png">Category 10</option>
-                                            <option value="d3.schemeDark2" data-image="./images/dark2.png">Dark 2</option>
-                                            <option value="d3.schemeTableau10" data-image="./images/Tableau10.png">Tableau 10</option>
-                                            <option value="d3.schemePastel1" data-image="./images/Pastel1.png">Pastel 1</option>
-                                            <option value="d3.interpolateBlues" data-image="./images/blues.png">Blues</option>
-                                            <option value="d3.interpolateGreens" data-image="./images/Greens.png">Greens</option>
+                                            <option value="d3.schemeCategory10" data-image="./images/category10.png">
+                                                Category 10</option>
+                                            <option value="d3.schemeDark2" data-image="./images/dark2.png">Dark 2
+                                            </option>
+                                            <option value="d3.schemeTableau10" data-image="./images/Tableau10.png">
+                                                Tableau 10</option>
+                                            <option value="d3.schemePastel1" data-image="./images/Pastel1.png">Pastel 1
+                                            </option>
+                                            <option value="d3.interpolateBlues" data-image="./images/blues.png">Blues
+                                            </option>
+                                            <option value="d3.interpolateGreens" data-image="./images/Greens.png">Greens
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
@@ -185,7 +194,7 @@
                                 </div>
                                 <label for="exampleFormControlTextarea1" class="form-label"><strong>Please enter
                                         article:</strong></label>
-                                <textarea class="form-control" rows="4" placeholder="" id="inputString">Australia, officially the Commonwealth of Australia, is a sovereign country comprising the mainland of the Australian continent, the island of Tasmania, and numerous smaller islands.[13] With an area of 7,617,930 square kilometres (2,941,300 sq mi),[14] Australia is the largest country by area in Oceania and the world's sixth-largest country. Australia is the oldest,[15] flattest,[16] and driest inhabited continent,[17][18] with the least fertile soils.[19][20] It is a megadiverse country, and its size gives it a wide variety of landscapes and climates, with deserts in the centre, tropical rainforests in the north-east, and mountain ranges in the south-east.
+                                <textarea class="form-control" rows="4" placeholder="" id="inputString" required>Australia, officially the Commonwealth of Australia, is a sovereign country comprising the mainland of the Australian continent, the island of Tasmania, and numerous smaller islands.[13] With an area of 7,617,930 square kilometres (2,941,300 sq mi),[14] Australia is the largest country by area in Oceania and the world's sixth-largest country. Australia is the oldest,[15] flattest,[16] and driest inhabited continent,[17][18] with the least fertile soils.[19][20] It is a megadiverse country, and its size gives it a wide variety of landscapes and climates, with deserts in the centre, tropical rainforests in the north-east, and mountain ranges in the south-east.
 
                                     The ancestors of Aboriginal Australians began arriving from south east Asia approximately 65,000 years ago, during the last ice age.[21][22] Arriving by sea, they settled the continent and had formed approximately 250 distinct language groups by the time of European settlement, maintaining some of the longest known continuing artistic and religious traditions in the world.[23] Australia's written history commenced with the European maritime exploration of Australia. The Dutch navigator Willem Janszoon was the first known European to reach Australia, in 1606. In 1770, the British explorer James Cook mapped and claimed the east coast of Australia for Great Britain, and the First Fleet of British ships arrived at Sydney in 1788 to establish the penal colony of New South Wales. The European population grew in subsequent decades, and by the end of the 1850s gold rush, most of the continent had been explored by European settlers and an additional five self-governing British colonies established. Democratic parliaments were gradually established through the 19th century, culminating with a vote for the federation of the six colonies and foundation of the Commonwealth of Australia on 1 January 1901. Australia has since maintained a stable liberal democratic political system and wealthy market economy.
                                     
@@ -199,6 +208,13 @@
                                 </div>
                                 <p></p>
                                 <div><button type="button" class="btn btn-primary" id="run">Create word cloud</button>
+                                </div>
+                                <div>
+                                    <button class="btn btn-primary d-none" type="button" id="running" disabled>
+                                        <span class="spinner-border spinner-border-sm" role="status"
+                                            aria-hidden="true"></span>
+                                        Loading...
+                                    </button>
                                 </div>
                                 <p></p>
                             </div>
