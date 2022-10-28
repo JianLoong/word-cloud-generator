@@ -1,63 +1,78 @@
-import {stopWords} from "../wrangling/stopwords";
-import {stemmer} from "../wrangling/PorterStemmer1980"
+import { stopWords } from "../wrangling/stopwords";
+import { stemmer } from "../wrangling/PorterStemmer1980";
+import lemmatizer from 'node-lemmatizer';
 
 // Stop word list - https://kavita-ganesan.com/what-are-stop-words/
 let words = "";
 
-const removeStopWords =(str) => {
-  let res = []
-  let words = str.split(' ')
+const lemmatization = (str) => {
+  
+  let words = str.split(" ");
+
+  const res = [];
+  for (let word of words) {
+    res.push(lemmatizer.only_lemmas(word)[0]);
+    
+  }
+  return res.join(" ");
+};
+
+const removeStopWords = (str) => {
+  let res = [];
+  let words = str.split(" ");
   for (let i = 0; i < words.length; i++) {
-    let cleanedWord = words[i].split(".").join("")
+    let cleanedWord = words[i].split(".").join("");
     if (!stopWords.includes(cleanedWord)) {
-      res.push(cleanedWord)
+      res.push(cleanedWord);
     }
   }
-  return (res.join(' '))
-}
+  return res.join(" ");
+};
 
-const cleanData = (words, {
-  isRemoveStopWords = false,
-  isRemoveNumbers = false,
-  isRemoveSpecialCharacters = true,
-} = {}) => {
-
+const cleanData = (
+  words,
+  {
+    isRemoveStopWords = false,
+    isRemoveNumbers = false,
+    isRemoveSpecialCharacters = true,
+  } = {}
+) => {
   // Remove new lines
   words = words.replace(/(\r\n|\n|\r)/gm, "");
 
-  if (isRemoveStopWords == true)
-    words = removeStopWords(words);
+  if (isRemoveStopWords == true) words = removeStopWords(words);
 
-  if (isRemoveNumbers == true)
-    words = words.replace(/[0-9]/g, ' ');
+  if (isRemoveNumbers == true) words = words.replace(/[0-9]/g, " ");
 
   if (isRemoveSpecialCharacters == true) {
-    words = words.replace(/[^a-zA-Z0-9 ]/g, ' ');
+    words = words.replace(/[^a-zA-Z0-9 ]/g, " ");
   }
 
   return words;
-}
+};
+
+const transformData = (
+  words,
+  { selectedTransformationMethodology = undefined } = {}
+) => {
+  if (selectedTransformationMethodology == undefined) return words;
 
 
-const transformData = (words, {
-  selectedTransformationMethodology = undefined
-} = {}) => {
-  if (selectedTransformationMethodology == undefined)
-    return words;
-  else{
+  if (selectedTransformationMethodology == "lemmatization") return lemmatization(words);
+
+  else {
     const res = [];
-    for (let word of words.split(" ")){
+    for (let word of words.split(" ")) {
       res.push(stemmer()(word));
     }
-    return res.join( );
+    return res.join(" ");
   }
-}
+};
 
 onmessage = (e) => {
-
   const processedData = cleanData(e.data[0], e.data[1]);
 
   const transformedData = transformData(processedData, e.data[1]);
 
   postMessage(transformedData);
-}
+};
