@@ -18,10 +18,10 @@ window.onload = (event) => {
 
     button.addEventListener("click", () => {
 
+      if (isValid() == false)
+        return;
       divResult.classList.add("d-none");
-      validations();
 
-      if (textArea == undefined || textArea.value.length == 0) return;
 
       downloadButton.classList.add("d-none");
       runningButton.classList.remove("d-none");
@@ -89,7 +89,7 @@ window.onload = (event) => {
       button.classList.remove("d-none");
       runningButton.classList.add("d-none");
       divResult.classList.remove("d-none");
-      //};
+      
     });
 
     downloadButton.addEventListener("click", () => {
@@ -98,10 +98,9 @@ window.onload = (event) => {
       });
     });
 
-    const validations = () => {
-      // if(textArea.value == 0 || textArea.value === undefined)
-      //   textArea.classList.add(":invalid");;
-      // return;
+    const isValid = () => {
+      if (textArea == undefined || textArea.value.length == 0) return false;
+      return true;
     };
   }
 };
