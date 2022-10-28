@@ -1,4 +1,4 @@
-import { select, create, rollups, descending } from "d3"
+import { select, create, rollups, descending, treemapResquarify } from "d3"
 import *  as chromatic from "d3-scale-chromatic"
 import { scaleOrdinal, scaleSequential } from "d3";
 import cloud from "d3-cloud"
@@ -12,42 +12,33 @@ window.onload = (event) => {
     const tfIDF = document.getElementById("tfidf");
     const downloadButton = document.getElementById("download");
     const runningButton = document.getElementById("running");
+
     const divResult = document.querySelector(".div-result");
 
 
     const worker = new Worker(new URL('./worker/process.js', import.meta.url));
 
-    textArea.addEventListener("input", () => {
-      if (isValid()){
-        const form = document.querySelector('.needs-validation');
-        form.classList.add("was-validated");
-        // button.classList.remove("disabled");
-      }
-      else{
-        // button.classList.add("disabled");
-        const form = document.querySelector('.needs-validation');
-        form.classList.add("was-validated");
-      }
-
-    })
-    
-
 
     button.addEventListener("click", () => {
 
-      if (isValid()){
+      const noOfOrientation = document.getElementById("noOfOrientations").value;
+      const startAngle = document.getElementById("startAngle").value;
+      const endAngle = document.getElementById("endAngle").value;
+
+      if (validation()) {
         const form = document.querySelector('.needs-validation');
+       
         form.classList.add("was-validated");
         // button.classList.remove("disabled");
-      
       }
-      else{
+      else {
         // button.classList.add("disabled");
         const form = document.querySelector('.needs-validation');
+
         form.classList.add("was-validated");
         return;
       }
-        
+
       divResult.classList.add("d-none");
       downloadButton.classList.add("d-none");
       runningButton.classList.remove("d-none");
@@ -61,7 +52,6 @@ window.onload = (event) => {
       const isRemoveSpecialCharacters = document.getElementById(
         "removeSpecialCharacters"
       ).checked;
-
       const isReverseColourOrdering = document.getElementById(
         "reverseColourOrdering"
       ).checked;
@@ -74,16 +64,11 @@ window.onload = (event) => {
       const selectedFontScale = document.getElementById("fontScale").value;
       const selectedColourScheme =
         document.getElementById("colourScheme").value;
-      const noOfOrientation = document.getElementById("noOfOrientations").value;
-      const startAngle = document.getElementById("startAngle").value;
-      const endAngle = document.getElementById("endAngle").value;
 
       const selectedSpiral = document.querySelector(
         'input[name="spiral"]:checked'
       ).value;
-
       const words = textArea.value.toLowerCase();
-
       const config = {
         isRemoveNumbers,
         isRemoveSpecialCharacters,
@@ -91,9 +76,7 @@ window.onload = (event) => {
         selectedTransformationMethodology,
       };
 
-     
-
-      worker.postMessage([words,config]);
+      worker.postMessage([words, config]);
 
       // https://stackoverflow.com/questions/49285933/create-rotations-from-60-to-60-in-d3-cloud
       const rotateFunction = () => {
@@ -129,16 +112,27 @@ window.onload = (event) => {
       });
     });
 
-    const isValid = () => {
-      if (textArea == undefined || textArea.value.length == 0) {
 
+    const validation = () => {
+      const noOfOrientation = document.getElementById("noOfOrientations").value;
+      const startAngle = document.getElementById("startAngle").value;
+      const endAngle = document.getElementById("endAngle").value;
+      const textArea = document.getElementById("inputString").value;
+
+      if (noOfOrientation < 0)
         return false;
-      }
-
-      
+      if (noOfOrientation > 10)
+        return false;
+      if (textArea.length === 0)
+        return false;
+      if (textArea === undefined)
+        return false;
       return true;
-    };
+    }
   }
+
+
+
 };
 
 const getColourSchemeDomain = (
@@ -278,3 +272,4 @@ const generateCloud = (
 
   return svg.node();
 }
+
