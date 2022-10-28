@@ -2,7 +2,6 @@ import { select, create, rollups, descending } from "d3"
 import *  as chromatic from "d3-scale-chromatic"
 import { scaleOrdinal, scaleSequential } from "d3";
 import cloud from "d3-cloud"
-import { process } from "./worker/process"
 import * as d3ToPng from "d3-svg-to-png"
 
 window.onload = (event) => {
@@ -16,13 +15,40 @@ window.onload = (event) => {
     const divResult = document.querySelector(".div-result");
 
 
+    const worker = new Worker(new URL('./worker/process.js', import.meta.url));
+
+    textArea.addEventListener("input", () => {
+      if (isValid()){
+        const form = document.querySelector('.needs-validation');
+        form.classList.add("was-validated");
+        // button.classList.remove("disabled");
+      }
+      else{
+        // button.classList.add("disabled");
+        const form = document.querySelector('.needs-validation');
+        form.classList.add("was-validated");
+      }
+
+    })
+    
+
+
     button.addEventListener("click", () => {
 
-      if (isValid() == false)
+      if (isValid()){
+        const form = document.querySelector('.needs-validation');
+        form.classList.add("was-validated");
+        // button.classList.remove("disabled");
+      
+      }
+      else{
+        // button.classList.add("disabled");
+        const form = document.querySelector('.needs-validation');
+        form.classList.add("was-validated");
         return;
+      }
+        
       divResult.classList.add("d-none");
-
-
       downloadButton.classList.add("d-none");
       runningButton.classList.remove("d-none");
       button.classList.add("d-none");
@@ -65,7 +91,7 @@ window.onload = (event) => {
         selectedTransformationMethodology,
       };
 
-      const worker = new Worker(new URL('./worker/process.js', import.meta.url));
+     
 
       worker.postMessage([words,config]);
 
@@ -104,7 +130,12 @@ window.onload = (event) => {
     });
 
     const isValid = () => {
-      if (textArea == undefined || textArea.value.length == 0) return false;
+      if (textArea == undefined || textArea.value.length == 0) {
+
+        return false;
+      }
+
+      
       return true;
     };
   }
@@ -140,8 +171,7 @@ const getColourSchemeDomain = (
       isSequential = true;
       break;
     case "d3.interpolateGreens":
-      colors = scaleSequential(chromatic.interpolateGreens)
-        .domain([0, data.length]);
+      colors = scaleSequential(chromatic.interpolateGreens).domain([0, data.length]);
       isSequential = true;
       break;
     case "d3.interpolateCool":

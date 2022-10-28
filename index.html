@@ -25,11 +25,11 @@
         crossorigin="anonymous"></script>
 
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        
+        <form class="needs-validation" novalidate>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
                             <h1>Word Cloud Generator</h1>
                             <p>Click <a href="https://jianliew.me/projects">here</a> to return to projects page</p>
                             <div class="mb-3 form-control form-control-sm">
@@ -142,10 +142,10 @@
                                             <option value="black" selected>Black - No colour scheme</option>
                                             <option value="d3.schemeCategory10" data-image="./images/category10.png">
                                                 Category 10</option>
-                                                <option value="d3.schemeAccent" data-image="./images/Accent.png">
-                                                    Accent</option>
-                                                    <option value="d3.schemePaired" data-image="./images/Paired.png">
-                                                        Paired</option>
+                                            <option value="d3.schemeAccent" data-image="./images/Accent.png">
+                                                Accent</option>
+                                            <option value="d3.schemePaired" data-image="./images/Paired.png">
+                                                Paired</option>
                                             <option value="d3.schemeDark2" data-image="./images/dark2.png">Dark 2
                                             </option>
                                             <option value="d3.schemeTableau10" data-image="./images/Tableau10.png">
@@ -194,14 +194,14 @@
                                         Angle</label>
                                     <div class="col-sm-2">
                                         <input type="number" class="form-control float-end" id="startAngle" min="-90"
-                                            max="90" value="0" aria-describedby="">
+                                            max="90" value="0" aria-describedby="" required>
                                     </div>
                                     <label for="exampleFormControlInput1" class="col-sm-2 col-form-label">End
                                         Angle</label>
 
                                     <div class="col-sm-2">
                                         <input type="number" class="form-control float-end" id="endAngle" min="-90"
-                                            max="90" value="90" aria-describedby="">
+                                            max="90" value="90" aria-describedby="" required>
                                     </div>
                                     <div id="passwordHelpBlock" class="form-text">
                                         <strong>*The number of orientations indicates the amount of differently angled
@@ -247,7 +247,7 @@
                                 <div><button type="button" class="btn btn-primary" id="run">Create word cloud</button>
                                 </div>
                                 <div>
-                                    <button class="btn btn-primary d-none" type="button" id="running" disabled>
+                                    <button class="btn btn-primary d-none" type="submit" id="running" disabled>
                                         <span class="spinner-border spinner-border-sm" role="status"
                                             aria-hidden="true"></span>
                                         Loading...
@@ -255,37 +255,39 @@
                                 </div>
                                 <p></p>
                             </div>
+                        </div>
                     </div>
-                </div>
 
-            </div>
-            <div class="col-md-6">
-                <div class="card div-result d-none">
-                    <div class="card-body">
-                        <div class="row justify-content-center">
-                            <div class="">
-                                <p></p>
-                                <div id="cloud"></div>
-                                <div class="row justify-content-center">
-                                    <button type="submit" class="btn btn-primary d-none" id="download">Download as
-                                        PNG</button>
+                </div>
+                <div class="col-md-6">
+                    <div class="card div-result d-none">
+                        <div class="card-body">
+                            <div class="row justify-content-center">
+                                <div class="">
+                                    <p></p>
+                                    <div id="cloud"></div>
+                                    <div class="row justify-content-center">
+                                        <button type="submit" class="btn btn-primary d-none" id="download">Download as
+                                            PNG</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <p></p>
+
                     </div>
-                    <p></p>
 
                 </div>
-                
             </div>
-        </div>
-        <footer class="footer mt-auto py-3 bg-light">
-            <div class="container">
-                <span class="text-muted">Project can be found <a
-                        href="https://github.com/JianLoong/word-cloud-generator">here</a></span>
-            </div>
-        </footer>
+            <footer class="footer mt-auto py-3 bg-light">
+                <div class="container">
+                    <span class="text-muted">Project can be found <a
+                            href="https://github.com/JianLoong/word-cloud-generator">here</a></span>
+                </div>
+            </footer>
+        </form>
     </div>
+
     <script src="/dist/main.js" crossorigin="anonymous"></script>
     <!-- <script src="./d3/d3-to-img.js"></script>-->
     <script src="./dist/dd.min.js"></script>
