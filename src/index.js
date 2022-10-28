@@ -14,9 +14,32 @@ window.onload = (event) => {
     const runningButton = document.getElementById("running");
 
     const divResult = document.querySelector(".div-result");
+    const form = document.querySelector('.needs-validation');
 
 
     const worker = new Worker(new URL('./worker/process.js', import.meta.url));
+
+    textArea.addEventListener("input", () => {
+      if (form.checkValidity()) {
+        form.classList.add("was-validated");
+        button.classList.remove("disabled");
+      }
+      else {
+        form.classList.add("was-validated");
+        button.classList.add("disabled");
+      }
+    })
+
+    form.addEventListener("input", () => {
+      if (form.checkValidity()) {
+        form.classList.add("was-validated");
+        button.classList.remove("disabled");
+      }
+      else {
+        form.classList.add("was-validated");
+        button.classList.add("disabled");
+      }
+    })
 
 
     button.addEventListener("click", () => {
@@ -25,7 +48,7 @@ window.onload = (event) => {
       const startAngle = document.getElementById("startAngle").value;
       const endAngle = document.getElementById("endAngle").value;
 
-      const form = document.querySelector('.needs-validation');
+
 
       if (form.checkValidity()) {
         form.classList.add("was-validated");

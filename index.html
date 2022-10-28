@@ -110,7 +110,7 @@
                                     <label for="exampleFormControlInput1"
                                         class="col-sm-2 col-form-label">Font-family</label>
                                     <div class="col-sm-10">
-                                        <select class="form-select" aria-label="Default select example" id="fontFamily">
+                                        <select class="form-select" aria-label="Default select example" id="fontFamily" required>
                                             <option value="sans-serif" style="font-family: sans-serif;" selected>
                                                 sans-serif</option>
                                             <option value="impact" style="font-family: impact;">impact</option>
@@ -129,7 +129,7 @@
                                     </div>
                                     <div class="col-sm-10">
                                         <input type="number" class="form-control float-end" id="fontScale" min="5"
-                                            max="25" value="10" aria-describedby="">
+                                            max="25" value="10" aria-describedby="" required>
                                         <div id="numberHelp" class="form-text">The base size of the font</div>
                                     </div>
                                 </div>
@@ -260,8 +260,9 @@
                             </div>
                         </div>
                     </div>
-
+                    <p></p>
                 </div>
+
                 <div class="col-md-6">
                     <div class="card div-result d-none">
                         <div class="card-body">
