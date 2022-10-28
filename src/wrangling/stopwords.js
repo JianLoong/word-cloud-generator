@@ -1,5 +1,5 @@
 
-const stopWords = [
+export const stopWords = [
     "i",
     "me",
     "my",

@@ -7,7 +7,7 @@
     <title>Word Cloud Generator</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-    <link href="./dd.css" rel="stylesheet" integrity="" crossorigin="anonymous">
+    <link href="./dist/dd.css" rel="stylesheet" integrity="" crossorigin="anonymous">
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-55422968-1"></script>
     <script>
@@ -25,11 +25,11 @@
         crossorigin="anonymous"></script>
 
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <form novalidate>
+        <form class="needs-validation" novalidate>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
                             <h1>Word Cloud Generator</h1>
                             <p>Click <a href="https://jianliew.me/projects">here</a> to return to projects page</p>
                             <div class="mb-3 form-control form-control-sm">
@@ -142,10 +142,10 @@
                                             <option value="black" selected>Black - No colour scheme</option>
                                             <option value="d3.schemeCategory10" data-image="./images/category10.png">
                                                 Category 10</option>
-                                                <option value="d3.schemeAccent" data-image="./images/Accent.png">
-                                                    Accent</option>
-                                                    <option value="d3.schemePaired" data-image="./images/Paired.png">
-                                                        Paired</option>
+                                            <option value="d3.schemeAccent" data-image="./images/Accent.png">
+                                                Accent</option>
+                                            <option value="d3.schemePaired" data-image="./images/Paired.png">
+                                                Paired</option>
                                             <option value="d3.schemeDark2" data-image="./images/dark2.png">Dark 2
                                             </option>
                                             <option value="d3.schemeTableau10" data-image="./images/Tableau10.png">
@@ -188,20 +188,20 @@
 
                                     <div class="col-sm-2">
                                         <input type="number" class="form-control float-end" id="noOfOrientations"
-                                            min="1" max="25" value="1" aria-describedby="">
+                                            min="1" max="10" value="1" aria-describedby="" required>
                                     </div>
                                     <label for="exampleFormControlInput1" class="col-sm-2 col-form-label">Start
                                         Angle</label>
                                     <div class="col-sm-2">
                                         <input type="number" class="form-control float-end" id="startAngle" min="-90"
-                                            max="90" value="0" aria-describedby="">
+                                            max="90" value="0" aria-describedby="" required>
                                     </div>
                                     <label for="exampleFormControlInput1" class="col-sm-2 col-form-label">End
                                         Angle</label>
 
                                     <div class="col-sm-2">
                                         <input type="number" class="form-control float-end" id="endAngle" min="-90"
-                                            max="90" value="90" aria-describedby="">
+                                            max="90" value="90" aria-describedby="" required>
                                     </div>
                                     <div id="passwordHelpBlock" class="form-text">
                                         <strong>*The number of orientations indicates the amount of differently angled
@@ -240,6 +240,9 @@
                                     Australia is a highly developed country with a high-income economy. As of 2022, it was the world's twelfth-largest economy with the ninth-highest per capita income.[30] In 2017, it ranked as fifth-highest Human Development Index.[31][32] Australia is a regional power, and has the world's thirteenth-highest military expenditure.[33] Australia ranks amongst the highest in the world for quality of life, democracy, health, education, economic freedom, civil liberties, safety, and political rights,[34] with all its major cities faring exceptionally in global comparative livability surveys.[35] It is a member of international groupings including the United Nations, the G20, the OECD, the WTO, ANZUS, AUKUS, Five Eyes, the Quad, APEC, the Pacific Islands Forum, the Pacific Community and the Commonwealth of Nations.
 
                                 </textarea>
+                                <div class="invalid-feedback">
+                                    Please provide an input in the text area.
+                                  </div>
                                 <div id="passwordHelpBlock" class="form-text">
                                     Please note that a long article may take a long processing time.
                                 </div>
@@ -247,7 +250,7 @@
                                 <div><button type="button" class="btn btn-primary" id="run">Create word cloud</button>
                                 </div>
                                 <div>
-                                    <button class="btn btn-primary d-none" type="button" id="running" disabled>
+                                    <button class="btn btn-primary d-none" type="submit" id="running" disabled>
                                         <span class="spinner-border spinner-border-sm" role="status"
                                             aria-hidden="true"></span>
                                         Loading...
@@ -255,42 +258,42 @@
                                 </div>
                                 <p></p>
                             </div>
+                        </div>
                     </div>
-                </div>
 
-            </div>
-            <div class="col-md-6">
-                <div class="card div-result d-none">
-                    <div class="card-body">
-                        <div class="row justify-content-center">
-                            <div class="">
-                                <p></p>
-                                <div id="cloud"></div>
-                                <div class="row justify-content-center">
-                                    <button type="submit" class="btn btn-primary d-none" id="download">Download as
-                                        PNG</button>
+                </div>
+                <div class="col-md-6">
+                    <div class="card div-result d-none">
+                        <div class="card-body">
+                            <div class="row justify-content-center">
+                                <div class="">
+                                    <p></p>
+                                    <div id="cloud"></div>
+                                    <div class="row justify-content-center">
+                                        <button type="submit" class="btn btn-primary d-none" id="download">Download as
+                                            PNG</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <p></p>
+
                     </div>
-                    <p></p>
 
                 </div>
-                </form>
             </div>
-        </div>
-        <footer class="footer mt-auto py-3 bg-light">
-            <div class="container">
-                <span class="text-muted">Project can be found <a
-                        href="https://github.com/JianLoong/word-cloud-generator">here</a></span>
-            </div>
-        </footer>
+            <footer class="footer mt-auto py-3 bg-light">
+                <div class="container">
+                    <span class="text-muted">Project can be found <a
+                            href="https://github.com/JianLoong/word-cloud-generator">here</a></span>
+                </div>
+            </footer>
+        </form>
     </div>
-    <script src="./d3/d3.min.js"></script>
-    <script src="./d3/d3.layout.cloud.js" crossorigin="anonymous"></script>
-    <script src="./main.js" crossorigin="anonymous"></script>
-    <script src="./d3/d3-to-img.js"></script>
-    <script src="./dd.min.js"></script>
+
+    <script src="/dist/main.js" crossorigin="anonymous"></script>
+    <!-- <script src="./d3/d3-to-img.js"></script>-->
+    <script src="./dist/dd.min.js"></script>
 </body>
 
 </html>

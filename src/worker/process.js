@@ -1,5 +1,5 @@
-importScripts("../wrangling/stopwords.js")
-importScripts("../wrangling/PorterStemmer1980.js");
+import {stopWords} from "../wrangling/stopwords";
+import {stemmer} from "../wrangling/PorterStemmer1980"
 
 // Stop word list - https://kavita-ganesan.com/what-are-stop-words/
 let words = "";
@@ -7,8 +7,8 @@ let words = "";
 const removeStopWords =(str) => {
   let res = []
   let words = str.split(' ')
-  for (i = 0; i < words.length; i++) {
-    cleanedWord = words[i].split(".").join("")
+  for (let i = 0; i < words.length; i++) {
+    let cleanedWord = words[i].split(".").join("")
     if (!stopWords.includes(cleanedWord)) {
       res.push(cleanedWord)
     }
@@ -42,19 +42,15 @@ const cleanData = (words, {
 const transformData = (words, {
   selectedTransformationMethodology = undefined
 } = {}) => {
-
   if (selectedTransformationMethodology == undefined)
     return words;
-
-  if (selectedTransformationMethodology == "stemming") {
-    let result = [];
-    for (let word of words.split(" ")) {
-      const stemmed = stemmer(word);
-      result.push(stemmed);
+  else{
+    const res = [];
+    for (let word of words.split(" ")){
+      res.push(stemmer()(word));
     }
-    return result.join(' ');
-  } else
-    return words;
+    return res.join( );
+  }
 }
 
 onmessage = (e) => {

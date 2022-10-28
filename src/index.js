@@ -1,25 +1,50 @@
+import { select, create, rollups, descending, treemapResquarify } from "d3"
+import *  as chromatic from "d3-scale-chromatic"
+import { scaleOrdinal, scaleSequential } from "d3";
+import cloud from "d3-cloud"
+import * as d3ToPng from "d3-svg-to-png"
+
 window.onload = (event) => {
+
   if (window.Worker) {
     const textArea = document.getElementById("inputString");
     const button = document.getElementById("run");
     const tfIDF = document.getElementById("tfidf");
     const downloadButton = document.getElementById("download");
     const runningButton = document.getElementById("running");
+
     const divResult = document.querySelector(".div-result");
 
-    const worker = new Worker("./worker/worker.js" + "?" + Math.random());
+
+    const worker = new Worker(new URL('./worker/process.js', import.meta.url));
+
 
     button.addEventListener("click", () => {
+
+      const noOfOrientation = document.getElementById("noOfOrientations").value;
+      const startAngle = document.getElementById("startAngle").value;
+      const endAngle = document.getElementById("endAngle").value;
+
+      if (validation()) {
+        const form = document.querySelector('.needs-validation');
+       
+        form.classList.add("was-validated");
+        // button.classList.remove("disabled");
+      }
+      else {
+        // button.classList.add("disabled");
+        const form = document.querySelector('.needs-validation');
+
+        form.classList.add("was-validated");
+        return;
+      }
+
       divResult.classList.add("d-none");
-      validations();
-
-      if (textArea == undefined || textArea.value.length == 0) return;
-
       downloadButton.classList.add("d-none");
       runningButton.classList.remove("d-none");
       button.classList.add("d-none");
 
-      const svg = d3.select("svg");
+      const svg = select("svg");
       svg.selectAll("*").remove();
       svg.remove();
 
@@ -27,7 +52,6 @@ window.onload = (event) => {
       const isRemoveSpecialCharacters = document.getElementById(
         "removeSpecialCharacters"
       ).checked;
-
       const isReverseColourOrdering = document.getElementById(
         "reverseColourOrdering"
       ).checked;
@@ -40,16 +64,11 @@ window.onload = (event) => {
       const selectedFontScale = document.getElementById("fontScale").value;
       const selectedColourScheme =
         document.getElementById("colourScheme").value;
-      const noOfOrientation = document.getElementById("noOfOrientations").value;
-      const startAngle = document.getElementById("startAngle").value;
-      const endAngle = document.getElementById("endAngle").value;
 
       const selectedSpiral = document.querySelector(
         'input[name="spiral"]:checked'
       ).value;
-
       const words = textArea.value.toLowerCase();
-
       const config = {
         isRemoveNumbers,
         isRemoveSpecialCharacters,
@@ -77,13 +96,14 @@ window.onload = (event) => {
           isReverseColourOrdering,
         });
 
-        d3.select("#cloud").node().appendChild(a);
+        select("#cloud").node().appendChild(a);
 
         downloadButton.classList.remove("d-none");
         button.classList.remove("d-none");
         runningButton.classList.add("d-none");
         divResult.classList.remove("d-none");
       };
+
     });
 
     downloadButton.addEventListener("click", () => {
@@ -92,12 +112,27 @@ window.onload = (event) => {
       });
     });
 
-    const validations = () => {
-      // if(textArea.value == 0 || textArea.value === undefined)
-      //   textArea.classList.add(":invalid");;
-      // return;
-    };
+
+    const validation = () => {
+      const noOfOrientation = document.getElementById("noOfOrientations").value;
+      const startAngle = document.getElementById("startAngle").value;
+      const endAngle = document.getElementById("endAngle").value;
+      const textArea = document.getElementById("inputString").value;
+
+      if (noOfOrientation < 0)
+        return false;
+      if (noOfOrientation > 10)
+        return false;
+      if (textArea.length === 0)
+        return false;
+      if (textArea === undefined)
+        return false;
+      return true;
+    }
   }
+
+
+
 };
 
 const getColourSchemeDomain = (
@@ -110,49 +145,46 @@ const getColourSchemeDomain = (
   switch (colourSchemeString) {
     // Scale ordinal
     case "d3.schemeCategory10":
-      colors = d3.scaleOrdinal(d3.schemeCategory10).domain(data);
+      colors = scaleOrdinal(chromatic.schemeCategory10).domain(data);
       break;
     case "d3.schemeDark2":
-      colors = d3.scaleOrdinal(d3.schemeDark2).domain(data);
+      colors = scaleOrdinal(chromatic.schemeDark2).domain(data);
       break;
     case "d3.schemeTableau10":
-      colors = colors = d3.scaleOrdinal(d3.schemeTableau10).domain(data);
+      colors = colors = scaleOrdinal(chromatic.schemeTableau10).domain(data);
       break;
-      case "d3.schemeAccent":
-        colors = colors = d3.scaleOrdinal(d3.schemeAccent).domain(data);
-        break;
+    case "d3.schemeAccent":
+      colors = colors = scaleOrdinal(chromatic.schemeAccent).domain(data);
+      break;
     case "d3.schemePaired":
-      colors = d3.scaleOrdinal(d3.schemePaired).domain(data);
+      colors = scaleOrdinal(chromatic.schemePaired).domain(data);
       break;
-
     // Scale sequential
     case "d3.interpolateBlues":
-      colors = d3.scaleSequential(d3.interpolateBlues).domain([0, data.length]);
+      colors = scaleSequential(chromatic.interpolateBlues).domain([0, data.length]);
       isSequential = true;
       break;
     case "d3.interpolateGreens":
-      colors = d3
-        .scaleSequential(d3.interpolateGreens)
-        .domain([0, data.length]);
+      colors = scaleSequential(chromatic.interpolateGreens).domain([0, data.length]);
       isSequential = true;
       break;
     case "d3.interpolateCool":
-      colors = d3.scaleSequential(d3.interpolateCool).domain([0, data.length]);
+      colors = scaleSequential(chromatic.interpolateCool).domain([0, data.length]);
       isSequential = true;
       break;
     case "d3.interpolateRdGy":
-        colors = d3.scaleSequential(d3.interpolateRdGy).domain([0, data.length]);
-        isSequential = true;
-        break;
+      colors = scaleSequential(chromatic.interpolateRdGy).domain([0, data.length]);
+      isSequential = true;
+      break;
     case "d3.interpolateCividis":
-      colors = d3
-        .scaleSequential(d3.interpolateCividis)
+      colors = scaleSequential(chromatic.interpolateCividis)
         .domain([0, data.length]);
       isSequential = true;
       break;
     default:
       return data;
   }
+
 
   if (isReverseColourOrdering === false) {
     for (let i = 0; i < data.length; i++) {
@@ -171,7 +203,6 @@ const getColourSchemeDomain = (
       i--;
     }
   }
-
   return data;
 };
 
@@ -193,52 +224,52 @@ const generateCloud = (
     rotate = 0, // a constant or function to rotate the words
     invalidation, // when this promise resolves, stop the simulation
     colourScheme = "d3.schemeCategory10",
-    spiral = archimedeanSpiral,
+    spiral = archimedean,
     isReverseColourOrdering = false,
   } = {}
 ) => {
   const words =
     typeof text === "string" ? text.split(/\W+/g) : Array.from(text);
-  const data = d3
-    .rollups(words, size, (w) => w)
-    .sort(([, a], [, b]) => d3.descending(a, b))
-    .slice(0, maxWords)
-    .map(([key, size]) => ({ text: word(key), size }));
+  const data =
+    rollups(words, size, (w) => w)
+      .sort(([, a], [, b]) => descending(a, b))
+      .slice(0, maxWords)
+      .map(([key, size]) => ({ text: word(key), size }));
 
   // This is for the colour scheme
   getColourSchemeDomain(colourScheme, data, isReverseColourOrdering);
 
-  const svg = d3
-    .create("svg")
-    .attr("viewBox", [0, 0, width, height])
-    .attr("font-family", fontFamily)
-    .attr("text-anchor", "middle")
-    .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
+  const svg =
+    create("svg")
+      .attr("viewBox", [0, 0, width, height])
+      .attr("font-family", fontFamily)
+      .attr("text-anchor", "middle")
+      .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
 
   const g = svg
     .append("g")
     .attr("transform", `translate(${marginLeft},${marginTop})`);
 
-  const cloud = d3.layout
-    .cloud()
-    .size([width - marginLeft - marginRight, height - marginTop - marginBottom])
-    .words(data)
-    .spiral(spiral)
-    .padding(padding)
-    .rotate(rotate)
-    .font(fontFamily)
-    .fontSize((d) => Math.sqrt(d.size) * fontScale)
-    .on("word", ({ size, x, y, rotate, text, color }) => {
-      g.append("text")
-        .transition()
-        .duration(500)
-        .style("fill", color)
-        .attr("font-size", size)
-        .attr("transform", `translate(${x},${y}) rotate(${rotate})`)
-        .text(text);
-    });
+  const c =
+    cloud()
+      .size([width - marginLeft - marginRight, height - marginTop - marginBottom])
+      .words(data)
+      .padding(padding)
+      .rotate(rotate)
+      .font(fontFamily)
+      .fontSize((d) => Math.sqrt(d.size) * fontScale)
+      .on("word", ({ size, x, y, rotate, text, color }) => {
+        g.append("text")
+          .transition()
+          .duration(500)
+          .style("fill", color)
+          .attr("font-size", size)
+          .attr("transform", `translate(${x},${y}) rotate(${rotate})`)
+          .text(text);
+      });
 
-  cloud.start();
+  c.start();
 
   return svg.node();
-};
+}
+
