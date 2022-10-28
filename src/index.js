@@ -112,7 +112,10 @@ window.onload = (event) => {
           isReverseColourOrdering,
         });
 
-        select("#cloud").node().appendChild(a);
+        a[0].start();
+
+
+        select("#cloud").node().appendChild(a[1].node());
 
         downloadButton.classList.remove("d-none");
         button.classList.remove("d-none");
@@ -252,6 +255,7 @@ const generateCloud = (
       .padding(padding)
       .rotate(rotate)
       .font(fontFamily)
+      .spiral(spiral)
       .fontSize((d) => Math.sqrt(d.size) * fontScale)
       .on("word", ({ size, x, y, rotate, text, color }) => {
         g.append("text")
@@ -263,8 +267,8 @@ const generateCloud = (
           .text(text);
       });
 
-  c.start();
-
-  return svg.node();
+  //c.start();
+  return [c,svg];
+  //return svg.node();
 }
 
