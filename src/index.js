@@ -25,16 +25,14 @@ window.onload = (event) => {
       const startAngle = document.getElementById("startAngle").value;
       const endAngle = document.getElementById("endAngle").value;
 
-      if (validation()) {
-        const form = document.querySelector('.needs-validation');
-       
+      const form = document.querySelector('.needs-validation');
+
+      if (form.checkValidity()) {
         form.classList.add("was-validated");
         // button.classList.remove("disabled");
       }
       else {
         // button.classList.add("disabled");
-        const form = document.querySelector('.needs-validation');
-
         form.classList.add("was-validated");
         return;
       }
@@ -111,28 +109,7 @@ window.onload = (event) => {
         background: "white",
       });
     });
-
-
-    const validation = () => {
-      const noOfOrientation = document.getElementById("noOfOrientations").value;
-      const startAngle = document.getElementById("startAngle").value;
-      const endAngle = document.getElementById("endAngle").value;
-      const textArea = document.getElementById("inputString").value;
-
-      if (noOfOrientation < 0)
-        return false;
-      if (noOfOrientation > 10)
-        return false;
-      if (textArea.length === 0)
-        return false;
-      if (textArea === undefined)
-        return false;
-      return true;
-    }
   }
-
-
-
 };
 
 const getColourSchemeDomain = (
