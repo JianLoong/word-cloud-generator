@@ -9,7 +9,6 @@ window.onload = (event) => {
   if (window.Worker) {
     const textArea = document.getElementById("inputString");
     const button = document.getElementById("run");
-    const tfIDF = document.getElementById("tfidf");
     const downloadButton = document.getElementById("download");
     const runningButton = document.getElementById("running");
 
@@ -48,14 +47,10 @@ window.onload = (event) => {
       const startAngle = document.getElementById("startAngle").value;
       const endAngle = document.getElementById("endAngle").value;
 
-
-
       if (form.checkValidity()) {
         form.classList.add("was-validated");
-        // button.classList.remove("disabled");
       }
       else {
-        // button.classList.add("disabled");
         form.classList.add("was-validated");
         return;
       }

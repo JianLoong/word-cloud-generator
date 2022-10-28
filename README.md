@@ -22,12 +22,12 @@ More interestingly most of the word cloud generators out there are too tedious t
 
 #  Stop words
 
-For more information read Wikipedia entry [here](https://en.wikipedia.org/wiki/Stop_word)
+For more information, please read the Wikipedia entry [here](https://en.wikipedia.org/wiki/Stop_word)
 
-Plans are in place to implement, 3 published stop words list. 
-- Snowball list found [here](http://snowball.tartarus.org/algorithms/english/stop.txt)
-- Terrier list found [here](https://github.com/kavgan/stop-words/blob/master/terrier-stop.txt)
-- Minimal list found [here](https://github.com/kavgan/stop-words/blob/master/minimal-stop.txt)
+Plans are in place to implement, 3 published stop words lists. 
+- The sSnowball list is found [here](http://snowball.tartarus.org/algorithms/english/stop.txt)
+- The Terrier list is found [here](https://github.com/kavgan/stop-words/blob/master/terrier-stop.txt)
+- The Minimal list is found [here](https://github.com/kavgan/stop-words/blob/master/minimal-stop.txt)
 - Custom list from the user
   
 Depending on interest, this list will be expanded over time.
