@@ -11,7 +11,7 @@
 //
 // see also http://www.tartarus.org/~martin/PorterStemmer
 
-var stemmer = (function(){
+export const stemmer = () => {
   var step2list = {
       "ational" : "ate",
       "tional" : "tion",
@@ -225,4 +225,4 @@ var stemmer = (function(){
 
     return w;
   }
-})();
+};

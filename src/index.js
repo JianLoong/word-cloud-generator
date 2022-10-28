@@ -1,4 +1,12 @@
+import { select, create, rollups, descending } from "d3"
+import *  as chromatic from "d3-scale-chromatic"
+import { scaleOrdinal, scaleSequential } from "d3";
+import cloud from "d3-cloud"
+import {process} from "./worker/process"
+import * as d3ToPng from "d3-svg-to-png"
+
 window.onload = (event) => {
+
   if (window.Worker) {
     const textArea = document.getElementById("inputString");
     const button = document.getElementById("run");
@@ -7,9 +15,9 @@ window.onload = (event) => {
     const runningButton = document.getElementById("running");
     const divResult = document.querySelector(".div-result");
 
-    const worker = new Worker("./worker/worker.js" + "?" + Math.random());
 
     button.addEventListener("click", () => {
+
       divResult.classList.add("d-none");
       validations();
 
@@ -19,7 +27,7 @@ window.onload = (event) => {
       runningButton.classList.remove("d-none");
       button.classList.add("d-none");
 
-      const svg = d3.select("svg");
+      const svg = select("svg");
       svg.selectAll("*").remove();
       svg.remove();
 
@@ -57,33 +65,31 @@ window.onload = (event) => {
         selectedTransformationMethodology,
       };
 
-      worker.postMessage([words, config]);
+      const data = process([words, config]);
 
       // https://stackoverflow.com/questions/49285933/create-rotations-from-60-to-60-in-d3-cloud
       const rotateFunction = () => {
         return ~~(Math.random() * noOfOrientation) * endAngle - startAngle;
       };
 
-      worker.onmessage = (e) => {
-        const data = e.data;
-        const a = generateCloud(data, {
-          width: 500,
-          height: 400,
-          fontFamily: selectedFontFamily,
-          colourScheme: selectedColourScheme,
-          fontScale: selectedFontScale,
-          rotate: rotateFunction,
-          spiral: selectedSpiral,
-          isReverseColourOrdering,
-        });
+      const a = generateCloud(data, {
+        width: 500,
+        height: 400,
+        fontFamily: selectedFontFamily,
+        colourScheme: selectedColourScheme,
+        fontScale: selectedFontScale,
+        rotate: rotateFunction,
+        spiral: selectedSpiral,
+        isReverseColourOrdering,
+      });
 
-        d3.select("#cloud").node().appendChild(a);
+      select("#cloud").node().appendChild(a);
 
-        downloadButton.classList.remove("d-none");
-        button.classList.remove("d-none");
-        runningButton.classList.add("d-none");
-        divResult.classList.remove("d-none");
-      };
+      downloadButton.classList.remove("d-none");
+      button.classList.remove("d-none");
+      runningButton.classList.add("d-none");
+      divResult.classList.remove("d-none");
+      //};
     });
 
     downloadButton.addEventListener("click", () => {
@@ -110,49 +116,47 @@ const getColourSchemeDomain = (
   switch (colourSchemeString) {
     // Scale ordinal
     case "d3.schemeCategory10":
-      colors = d3.scaleOrdinal(d3.schemeCategory10).domain(data);
+      colors = scaleOrdinal(chromatic.schemeCategory10).domain(data);
       break;
     case "d3.schemeDark2":
-      colors = d3.scaleOrdinal(d3.schemeDark2).domain(data);
+      colors = scaleOrdinal(chromatic.schemeDark2).domain(data);
       break;
     case "d3.schemeTableau10":
-      colors = colors = d3.scaleOrdinal(d3.schemeTableau10).domain(data);
+      colors = colors = scaleOrdinal(chromatic.schemeTableau10).domain(data);
       break;
-      case "d3.schemeAccent":
-        colors = colors = d3.scaleOrdinal(d3.schemeAccent).domain(data);
-        break;
+    case "d3.schemeAccent":
+      colors = colors = scaleOrdinal(chromatic.schemeAccent).domain(data);
+      break;
     case "d3.schemePaired":
-      colors = d3.scaleOrdinal(d3.schemePaired).domain(data);
+      colors = scaleOrdinal(chromatic.schemePaired).domain(data);
       break;
-
     // Scale sequential
     case "d3.interpolateBlues":
-      colors = d3.scaleSequential(d3.interpolateBlues).domain([0, data.length]);
+      colors = scaleSequential(chromatic.interpolateBlues).domain([0, data.length]);
       isSequential = true;
       break;
     case "d3.interpolateGreens":
-      colors = d3
-        .scaleSequential(d3.interpolateGreens)
+      colors = scaleSequential(chromatic.interpolateGreens)
         .domain([0, data.length]);
       isSequential = true;
       break;
     case "d3.interpolateCool":
-      colors = d3.scaleSequential(d3.interpolateCool).domain([0, data.length]);
+      colors = scaleSequential(chromatic.interpolateCool).domain([0, data.length]);
       isSequential = true;
       break;
     case "d3.interpolateRdGy":
-        colors = d3.scaleSequential(d3.interpolateRdGy).domain([0, data.length]);
-        isSequential = true;
-        break;
+      colors = scaleSequential(chromatic.interpolateRdGy).domain([0, data.length]);
+      isSequential = true;
+      break;
     case "d3.interpolateCividis":
-      colors = d3
-        .scaleSequential(d3.interpolateCividis)
+      colors = scaleSequential(chromatic.interpolateCividis)
         .domain([0, data.length]);
       isSequential = true;
       break;
     default:
       return data;
   }
+
 
   if (isReverseColourOrdering === false) {
     for (let i = 0; i < data.length; i++) {
@@ -171,7 +175,6 @@ const getColourSchemeDomain = (
       i--;
     }
   }
-
   return data;
 };
 
@@ -193,52 +196,51 @@ const generateCloud = (
     rotate = 0, // a constant or function to rotate the words
     invalidation, // when this promise resolves, stop the simulation
     colourScheme = "d3.schemeCategory10",
-    spiral = archimedeanSpiral,
+    spiral = archimedean,
     isReverseColourOrdering = false,
   } = {}
 ) => {
   const words =
     typeof text === "string" ? text.split(/\W+/g) : Array.from(text);
-  const data = d3
-    .rollups(words, size, (w) => w)
-    .sort(([, a], [, b]) => d3.descending(a, b))
-    .slice(0, maxWords)
-    .map(([key, size]) => ({ text: word(key), size }));
+  const data =
+    rollups(words, size, (w) => w)
+      .sort(([, a], [, b]) => descending(a, b))
+      .slice(0, maxWords)
+      .map(([key, size]) => ({ text: word(key), size }));
 
   // This is for the colour scheme
   getColourSchemeDomain(colourScheme, data, isReverseColourOrdering);
 
-  const svg = d3
-    .create("svg")
-    .attr("viewBox", [0, 0, width, height])
-    .attr("font-family", fontFamily)
-    .attr("text-anchor", "middle")
-    .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
+  const svg =
+    create("svg")
+      .attr("viewBox", [0, 0, width, height])
+      .attr("font-family", fontFamily)
+      .attr("text-anchor", "middle")
+      .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
 
   const g = svg
     .append("g")
     .attr("transform", `translate(${marginLeft},${marginTop})`);
 
-  const cloud = d3.layout
-    .cloud()
-    .size([width - marginLeft - marginRight, height - marginTop - marginBottom])
-    .words(data)
-    .spiral(spiral)
-    .padding(padding)
-    .rotate(rotate)
-    .font(fontFamily)
-    .fontSize((d) => Math.sqrt(d.size) * fontScale)
-    .on("word", ({ size, x, y, rotate, text, color }) => {
-      g.append("text")
-        .transition()
-        .duration(500)
-        .style("fill", color)
-        .attr("font-size", size)
-        .attr("transform", `translate(${x},${y}) rotate(${rotate})`)
-        .text(text);
-    });
+  const c =
+    cloud()
+      .size([width - marginLeft - marginRight, height - marginTop - marginBottom])
+      .words(data)
+      .padding(padding)
+      .rotate(rotate)
+      .font(fontFamily)
+      .fontSize((d) => Math.sqrt(d.size) * fontScale)
+      .on("word", ({ size, x, y, rotate, text, color }) => {
+        g.append("text")
+          .transition()
+          .duration(500)
+          .style("fill", color)
+          .attr("font-size", size)
+          .attr("transform", `translate(${x},${y}) rotate(${rotate})`)
+          .text(text);
+      });
 
-  cloud.start();
+  c.start();
 
   return svg.node();
-};
+}
