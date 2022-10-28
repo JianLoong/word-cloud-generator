@@ -2,7 +2,7 @@ import { select, create, rollups, descending } from "d3"
 import *  as chromatic from "d3-scale-chromatic"
 import { scaleOrdinal, scaleSequential } from "d3";
 import cloud from "d3-cloud"
-import {process} from "./worker/process"
+import { process } from "./worker/process"
 import * as d3ToPng from "d3-svg-to-png"
 
 window.onload = (event) => {
@@ -65,31 +65,36 @@ window.onload = (event) => {
         selectedTransformationMethodology,
       };
 
-      const data = process([words, config]);
+      const worker = new Worker(new URL('./worker/process.js', import.meta.url));
+
+      worker.postMessage([words,config]);
 
       // https://stackoverflow.com/questions/49285933/create-rotations-from-60-to-60-in-d3-cloud
       const rotateFunction = () => {
         return ~~(Math.random() * noOfOrientation) * endAngle - startAngle;
       };
 
-      const a = generateCloud(data, {
-        width: 500,
-        height: 400,
-        fontFamily: selectedFontFamily,
-        colourScheme: selectedColourScheme,
-        fontScale: selectedFontScale,
-        rotate: rotateFunction,
-        spiral: selectedSpiral,
-        isReverseColourOrdering,
-      });
+      worker.onmessage = (e) => {
+        const data = e.data;
+        const a = generateCloud(data, {
+          width: 500,
+          height: 400,
+          fontFamily: selectedFontFamily,
+          colourScheme: selectedColourScheme,
+          fontScale: selectedFontScale,
+          rotate: rotateFunction,
+          spiral: selectedSpiral,
+          isReverseColourOrdering,
+        });
 
-      select("#cloud").node().appendChild(a);
+        select("#cloud").node().appendChild(a);
 
-      downloadButton.classList.remove("d-none");
-      button.classList.remove("d-none");
-      runningButton.classList.add("d-none");
-      divResult.classList.remove("d-none");
-      
+        downloadButton.classList.remove("d-none");
+        button.classList.remove("d-none");
+        runningButton.classList.add("d-none");
+        divResult.classList.remove("d-none");
+      };
+
     });
 
     downloadButton.addEventListener("click", () => {

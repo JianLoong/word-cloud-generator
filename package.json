@@ -18,11 +18,9 @@
   },
   "homepage": "https://github.com/JianLoong/word-cloud-generator#readme",
   "dependencies": {
-    "canvas": "^2.10.1",
     "d3": "^7.6.1",
     "d3-cloud": "^1.2.5",
-    "d3-svg-to-png": "^0.2.0",
-    "tiny-worker": "^2.3.0"
+    "d3-svg-to-png": "^0.2.0"
   },
   "devDependencies": {
     "webpack": "^5.74.0",

@@ -53,14 +53,11 @@ const transformData = (words, {
   }
 }
 
+onmessage = (e) => {
 
+  const processedData = cleanData(e.data[0], e.data[1]);
 
-export const process = (e) => {
+  const transformedData = transformData(processedData, e.data[1]);
 
-  const processedData = cleanData(e[0], e[1]);
-
-  const result =  transformData(processedData, e[1]);
-
- 
-  return result;
+  postMessage(transformedData);
 }
