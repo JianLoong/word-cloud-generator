@@ -9,11 +9,6 @@ const colourSelect = () => {
   const singleColourDiv = document.getElementById("singleColourDiv");
   const colourSchemeDiv = document.getElementById("colourSchemeDiv");
 
-  const selectedColourGeneration = document.querySelector(
-    'input[name="colourGeneration"]:checked'
-  ).value;
-
-
   if (document.querySelector('input[name="colourGeneration"]')) {
     document.querySelectorAll('input[name="colourGeneration"]').forEach((elem) => {
       elem.addEventListener("change", function (event) {
@@ -48,12 +43,9 @@ if (window.Worker) {
   const picker = new Picker({
     parent: parent,
     popup: "top",
-    color: "violet",
+    color: "black",
   });
 
-  /*
-      You can do what you want with the chosen color using two callbacks: onChange and onDone.
-  */
   picker.onChange = function (color) {
     parent.style.background = color.rgbaString;
     selectedColour = color.rgbString;
