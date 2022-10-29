@@ -25,7 +25,7 @@ More interestingly most of the word cloud generators out there are too tedious t
 For more information, please read the Wikipedia entry [here](https://en.wikipedia.org/wiki/Stop_word)
 
 Plans are in place to implement, 3 published stop words lists. 
-- The sSnowball list is found [here](http://snowball.tartarus.org/algorithms/english/stop.txt)
+- The Snowball list is found [here](http://snowball.tartarus.org/algorithms/english/stop.txt)
 - The Terrier list is found [here](https://github.com/kavgan/stop-words/blob/master/terrier-stop.txt)
 - The Minimal list is found [here](https://github.com/kavgan/stop-words/blob/master/minimal-stop.txt)
 - Custom list from the user
@@ -45,5 +45,15 @@ Lemmatization will also be implemented based on the WordNet found [here](https:/
 Feel free to open an issue for discussion or a contribution to this repository. It is hosted via ``gh-pages``
 
 Suggestions for the project are also welcomed but I aim to keep the project as minimalistic as possible without the need for too many external dependencies and libraries.
+
+Remember to use a ``feature`` branch for all PRs
+
+1) Fork this project. Then ``clone`` in your local system
+2) Then create your own branch ``git checkout -b feature``
+3) Remember to install npm dependencies via ``npm install``
+4) To run the project just do ``npm run build``
+
+If you see an **error** during the npm install, please delete the LICENSE and README files under the node-lemmatizer under the node_modules directory 
+
 
 
