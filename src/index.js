@@ -134,7 +134,6 @@ if (window.Worker) {
       return ~~(Math.random() * noOfOrientation) * endAngle - startAngle;
     };
 
-
     let isSingleColour = false;
 
     if (selectedColourGeneration == "singleColour")
