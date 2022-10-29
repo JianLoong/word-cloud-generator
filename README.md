@@ -20,6 +20,11 @@ More interestingly most of the word cloud generators out there are too tedious t
 - easy to use for a person with no programming knowledge
 - providing simple data transformation and cleaning based on known ways
 
+# Screenshot Of the Project 
+
+![image](https://user-images.githubusercontent.com/76434100/198847325-07702c0d-9fe9-45fa-8072-ab765f796b59.png)
+
+
 #  Stop words
 
 For more information, please read the Wikipedia entry [here](https://en.wikipedia.org/wiki/Stop_word)
