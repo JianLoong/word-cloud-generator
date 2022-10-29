@@ -18,175 +18,173 @@ const colourSelect = () => {
     document.querySelectorAll('input[name="colourGeneration"]').forEach((elem) => {
       elem.addEventListener("change", function (event) {
         var item = event.target.value;
-        console.log(item);
         if (item === "singleColour") {
           colourSchemeDiv.classList.add("d-none");
           singleColourDiv.classList.remove("d-none");
-          
+
         } else {
           colourSchemeDiv.classList.remove("d-none");
           singleColourDiv.classList.add("d-none");
-          
+
         }
       });
     });
   }
 };
 
-window.onload = (event) => {
-  if (window.Worker) {
-    const textArea = document.getElementById("inputString");
-    const button = document.getElementById("run");
-    const downloadButton = document.getElementById("download");
-    const runningButton = document.getElementById("running");
+if (window.Worker) {
+  const textArea = document.getElementById("inputString");
+  const button = document.getElementById("run");
+  const downloadButton = document.getElementById("download");
+  const runningButton = document.getElementById("running");
 
-    const divResult = document.querySelector(".div-result");
-    const form = document.querySelector(".needs-validation");
-    let selectedColour = "";
+  const divResult = document.querySelector(".div-result");
+  const form = document.querySelector(".needs-validation");
+  let selectedColour = "";
 
-    colourSelect();
+  colourSelect();
 
-    const parent = document.querySelector("#colourPicker");
-    const picker = new Picker({
-      parent: parent,
-      popup: "top",
-      color: "violet",
-    });
+  const parent = document.querySelector("#colourPicker");
+  const picker = new Picker({
+    parent: parent,
+    popup: "top",
+    color: "violet",
+  });
 
-    /*
-        You can do what you want with the chosen color using two callbacks: onChange and onDone.
-    */
-    picker.onChange = function (color) {
-      parent.style.background = color.rgbaString;
-      selectedColour = color.rgbString;
+  /*
+      You can do what you want with the chosen color using two callbacks: onChange and onDone.
+  */
+  picker.onChange = function (color) {
+    parent.style.background = color.rgbaString;
+    selectedColour = color.rgbString;
+  };
+
+  const worker = new Worker(new URL("./worker/process.js", import.meta.url));
+
+  textArea.addEventListener("input", () => {
+    if (form.checkValidity()) {
+      form.classList.add("was-validated");
+      button.classList.remove("disabled");
+    } else {
+      form.classList.add("was-validated");
+      button.classList.add("disabled");
+    }
+  });
+
+  form.addEventListener("input", () => {
+    if (form.checkValidity()) {
+      form.classList.add("was-validated");
+      button.classList.remove("disabled");
+    } else {
+      form.classList.add("was-validated");
+      button.classList.add("disabled");
+    }
+  });
+
+  button.addEventListener("click", () => {
+    const noOfOrientation = document.getElementById("noOfOrientations").value;
+    const startAngle = document.getElementById("startAngle").value;
+    const endAngle = document.getElementById("endAngle").value;
+
+    if (form.checkValidity()) {
+      form.classList.add("was-validated");
+    } else {
+      form.classList.add("was-validated");
+      return;
+    }
+
+    divResult.classList.add("d-none");
+    downloadButton.classList.add("d-none");
+    runningButton.classList.remove("d-none");
+    button.classList.add("d-none");
+
+    const svg = select("svg");
+    svg.selectAll("*").remove();
+    svg.remove();
+
+    const isRemoveNumbers = document.getElementById("removeNumbers").checked;
+    const isRemoveSpecialCharacters = document.getElementById(
+      "removeSpecialCharacters"
+    ).checked;
+    const isReverseColourOrdering = document.getElementById(
+      "reverseColourOrdering"
+    ).checked;
+    const isRemoveStopWords =
+      document.getElementById("removeStopWords").checked;
+    const selectedTransformationMethodology = document.querySelector(
+      'input[name="transformationMethodology"]:checked'
+    ).value;
+    const selectedFontFamily = document.getElementById("fontFamily").value;
+    const selectedFontScale = document.getElementById("fontScale").value;
+    const selectedColourScheme =
+      document.getElementById("colourScheme").value;
+
+    const selectedSpiral = document.querySelector(
+      'input[name="spiral"]:checked'
+    ).value;
+    const words = textArea.value.toLowerCase();
+
+    const selectedColourGeneration = document.querySelector(
+      'input[name="colourGeneration"]:checked'
+    ).value;
+
+    const config = {
+      isRemoveNumbers,
+      isRemoveSpecialCharacters,
+      isRemoveStopWords,
+      selectedTransformationMethodology,
     };
 
-    const worker = new Worker(new URL("./worker/process.js", import.meta.url));
+    worker.postMessage([words, config]);
 
-    textArea.addEventListener("input", () => {
-      if (form.checkValidity()) {
-        form.classList.add("was-validated");
-        button.classList.remove("disabled");
-      } else {
-        form.classList.add("was-validated");
-        button.classList.add("disabled");
-      }
-    });
+    // https://stackoverflow.com/questions/49285933/create-rotations-from-60-to-60-in-d3-cloud
+    const rotateFunction = () => {
+      return ~~(Math.random() * noOfOrientation) * endAngle - startAngle;
+    };
 
-    form.addEventListener("input", () => {
-      if (form.checkValidity()) {
-        form.classList.add("was-validated");
-        button.classList.remove("disabled");
-      } else {
-        form.classList.add("was-validated");
-        button.classList.add("disabled");
-      }
-    });
 
-    button.addEventListener("click", () => {
-      const noOfOrientation = document.getElementById("noOfOrientations").value;
-      const startAngle = document.getElementById("startAngle").value;
-      const endAngle = document.getElementById("endAngle").value;
+    let isSingleColour = false;
 
-      if (form.checkValidity()) {
-        form.classList.add("was-validated");
-      } else {
-        form.classList.add("was-validated");
-        return;
-      }
+    if (selectedColourGeneration == "singleColour")
+      isSingleColour = true;
 
-      divResult.classList.add("d-none");
-      downloadButton.classList.add("d-none");
-      runningButton.classList.remove("d-none");
-      button.classList.add("d-none");
+    worker.onmessage = (e) => {
+      const data = e.data;
+      const a = generateCloud(data, {
+        width: 500,
+        height: 400,
+        fontFamily: selectedFontFamily,
+        colourScheme: selectedColourScheme,
+        fontScale: selectedFontScale,
+        rotate: rotateFunction,
+        spiral: selectedSpiral,
+        isReverseColourOrdering: isReverseColourOrdering,
+        isSingleColour: isSingleColour,
+        color: selectedColour
 
-      const svg = select("svg");
-      svg.selectAll("*").remove();
-      svg.remove();
-
-      const isRemoveNumbers = document.getElementById("removeNumbers").checked;
-      const isRemoveSpecialCharacters = document.getElementById(
-        "removeSpecialCharacters"
-      ).checked;
-      const isReverseColourOrdering = document.getElementById(
-        "reverseColourOrdering"
-      ).checked;
-      const isRemoveStopWords =
-        document.getElementById("removeStopWords").checked;
-      const selectedTransformationMethodology = document.querySelector(
-        'input[name="transformationMethodology"]:checked'
-      ).value;
-      const selectedFontFamily = document.getElementById("fontFamily").value;
-      const selectedFontScale = document.getElementById("fontScale").value;
-      const selectedColourScheme =
-        document.getElementById("colourScheme").value;
-
-      const selectedSpiral = document.querySelector(
-        'input[name="spiral"]:checked'
-      ).value;
-      const words = textArea.value.toLowerCase();
-      const config = {
-        isRemoveNumbers,
-        isRemoveSpecialCharacters,
-        isRemoveStopWords,
-        selectedTransformationMethodology,
-      };
-
-      worker.postMessage([words, config]);
-
-      // https://stackoverflow.com/questions/49285933/create-rotations-from-60-to-60-in-d3-cloud
-      const rotateFunction = () => {
-        return ~~(Math.random() * noOfOrientation) * endAngle - startAngle;
-      };
-
-      const selectedColourGeneration = document.querySelector(
-        'input[name="colourGeneration"]:checked'
-      ).value;
-
-      
-
-      let isSingleColour = false;
-
-      if (selectedColourGeneration == "singleColour")
-        isSingleColour = true;
-
-      worker.onmessage = (e) => {
-        const data = e.data;
-        const a = generateCloud(data, {
-          width: 500,
-          height: 400,
-          fontFamily: selectedFontFamily,
-          colourScheme: selectedColourScheme,
-          fontScale: selectedFontScale,
-          rotate: rotateFunction,
-          spiral: selectedSpiral,
-          isReverseColourOrdering: isReverseColourOrdering,
-          isSingleColour: isSingleColour,
-          color: selectedColour
-
-        });
-
-        a[0].start();
-
-        select("#cloud").node().appendChild(a[1].node());
-
-        downloadButton.classList.remove("d-none");
-        button.classList.remove("d-none");
-        runningButton.classList.add("d-none");
-        divResult.classList.remove("d-none");
-      };
-    });
-
-    downloadButton.addEventListener("click", () => {
-      d3ToPng("svg", "word-cloud", {
-        background: "white",
       });
+
+      a[0].start();
+
+      select("#cloud").node().appendChild(a[1].node());
+
+      downloadButton.classList.remove("d-none");
+      button.classList.remove("d-none");
+      runningButton.classList.add("d-none");
+      divResult.classList.remove("d-none");
+    };
+  });
+
+  downloadButton.addEventListener("click", () => {
+    d3ToPng("svg", "word-cloud", {
+      background: "white",
     });
-  }
-};
+  });
+}
+
 
 const getSingleColourSchemeDomain = (colour, data) => {
-  for(let d of data){
+  for (let d of data) {
     d["color"] = colour;
   }
 }
