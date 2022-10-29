@@ -39,21 +39,21 @@
 
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="removeStopWords" checked>
-                                    <label class="form-check-label" for="flexCheckChecked" id="">
+                                    <label class="form-check-label" for="removeStopWords" id="">
                                         Remove stop words
                                     </label>
                                 </div>
 
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="removeNumbers">
-                                    <label class="form-check-label" for="flexCheckChecked" id="">
+                                    <label class="form-check-label" for="removeNumbers" id="">
                                         Remove numbers
                                     </label>
                                 </div>
 
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="removeSpecialCharacters">
-                                    <label class="form-check-label" for="flexCheckChecked">
+                                    <label class="form-check-label" for="removeSpecialCharacters">
                                         Remove special characters
                                     </label>
                                 </div>
@@ -63,22 +63,22 @@
                                         text transformation methodology:</strong></label>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="transformationMethodology"
-                                        value="none" id="flexRadioDefault" checked>
-                                    <label class="form-check-label" for="flexRadioDefault">
+                                        value="none" id="none" checked>
+                                    <label class="form-check-label" for="none">
                                         None
                                     </label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="transformationMethodology"
-                                        value="stemming" id="flexRadioDefault1">
-                                    <label class="form-check-label" for="flexRadioDefault1">
+                                        value="stemming" id="stemmingRadio">
+                                    <label class="form-check-label" for="stemmingRadio">
                                         Stemming
                                     </label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="transformationMethodology"
-                                        value="lemmatization" id="flexRadioDefault2">
-                                    <label class="form-check-label" for="flexRadioDefault2">
+                                        value="lemmatization" id="lemmaRadio">
+                                    <label class="form-check-label" for="lemmaRadio">
                                         Lemmatization
                                     </label>
                                     <div id="lemmatizationHelpBlock" class="form-text">
@@ -92,27 +92,27 @@
                                 <label for="exampleFormControlTextarea1" class="form-label"><strong>Please select
                                         word display methodology:</strong></label>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="wordCountMethodology" id=""
+                                    <input class="form-check-input" type="radio" name="wordCountMethodology" id="wordCount"
                                         checked>
-                                    <label class="form-check-label" for="flexRadioDefault1">
+                                    <label class="form-check-label" for="wordCount">
                                         Word Count
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="wordCountMethodology" id=""
+                                    <input class="form-check-input" type="radio" name="wordCountMethodology" id="randomWods"
                                         disabled>
-                                    <label class="form-check-label" for="flexRadioDefault1">
+                                    <label class="form-check-label" for="randomWods">
                                         Random Words
                                     </label>
                                 </div>
                             </div>
                             <div class="mb-3 form-control form-control-sm">
-                                <label for="exampleFormControlTextarea1" class="form-label"><strong>Please configure
+                                <label for="wordCloudSettings" class="form-label"><strong>Please configure
                                         word
                                         cloud
                                         settings:</strong></label>
                                 <div class="mb-3 row">
-                                    <label for="exampleFormControlInput1"
+                                    <label for="fontFamily"
                                         class="col-sm-2 col-form-label">Font-family</label>
                                     <div class="col-sm-10">
                                         <select class="form-select" aria-label="Default select example" id="fontFamily"
@@ -131,7 +131,7 @@
                                 </div>
                                 <div class="mb-3 row">
                                     <div class="col-sm-2 ">
-                                        <label for="exampleFormControlInput1" class="col-form-label">Font-Scale</label>
+                                        <label for="fontScale" class="col-form-label">Font-Scale</label>
                                     </div>
                                     <div class="col-sm-10">
                                         <input type="number" class="form-control float-end" id="fontScale" min="5"
@@ -143,7 +143,7 @@
                                 <div class="mb-3 row">
 
                                     <div class="col col-sm-2">
-                                        <label for="" class="col-form-label">Colour selection:</label>
+                                        <label for="colourSelection" class="col-form-label">Colour selection:</label>
                                     </div>
                                     <div class="col-sm-10">
                                         <input type="radio" class="btn-check" name="colourGeneration" id="option1" value="singleColour"
@@ -160,7 +160,7 @@
                                 <div id="singleColourDiv">
                                     <div class="mb-3 row">
                                         <div class="col col-sm-2">
-                                            <label for="" class="col-form-label">Colour</label>
+                                            <label for="colourPicker" class="col-form-label">Colour</label>
                                         </div>
                                         <div class="col-sm-10">
                                             <a href type="text" style="background-color: black;" class="form-control float-end" id="colourPicker"
@@ -170,7 +170,7 @@
                                 </div>
                                 <div id="colourSchemeDiv" class="d-none">
                                     <div class="mb-3 row">
-                                        <label for="exampleFormControlInput1"
+                                        <label for="colourScheme"
                                             class="col-sm-2 col-form-label">Colour-Scheme</label>
                                         <div class="col-sm-10">
                                             <select class="form-select selectpicker" aria-label="Default select example"
@@ -216,7 +216,7 @@
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox"
                                                     id="reverseColourOrdering">
-                                                <label class="form-check-label" for="flexCheckChecked" id="">
+                                                <label class="form-check-label" for="reverseColourOrdering" id="">
                                                     Reverse colour ordering
                                                 </label>
                                             </div>
@@ -226,20 +226,20 @@
                                 </div>
 
                                 <div class="mb-3 row">
-                                    <label for="exampleFormControlInput1" class="col-sm-2 col-form-label">No of
+                                    <label for="noOfOrientations" class="col-sm-2 col-form-label">No of
                                         Orientation</label>
 
                                     <div class="col-sm-2">
                                         <input type="number" class="form-control float-end" id="noOfOrientations"
                                             min="1" max="10" value="1" aria-describedby="" required>
                                     </div>
-                                    <label for="exampleFormControlInput1" class="col-sm-2 col-form-label">Start
+                                    <label for="startAngle" class="col-sm-2 col-form-label">Start
                                         Angle</label>
                                     <div class="col-sm-2">
                                         <input type="number" class="form-control float-end" id="startAngle" min="-90"
                                             max="90" value="0" aria-describedby="" required>
                                     </div>
-                                    <label for="exampleFormControlInput1" class="col-sm-2 col-form-label">End
+                                    <label for="endAngle" class="col-sm-2 col-form-label">End
                                         Angle</label>
 
                                     <div class="col-sm-2">
@@ -253,26 +253,26 @@
                                     </div>
                                 </div>
                                 <div class="mb-3 row">
-                                    <label for="exampleFormControlInput1" class="col-sm-2 col-form-label">Spiral</label>
+                                    <label for="spiralRadio" class="col-sm-2 col-form-label">Spiral</label>
                                     <div class="col-sm-10">
 
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="spiral"
-                                                value="archimedean" id="flexRadioDefault4" checked>
-                                            <label class="form-check-label" for="flexRadioDefault4">
+                                                value="archimedean" id="archimedeanRadio" checked>
+                                            <label class="form-check-label" for="archimedeanRadio">
                                                 Archimedean
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="spiral"
-                                                value="rectangular" id="flexRadioDefault5">
-                                            <label class="form-check-label" for="flexRadioDefault5">
+                                                value="rectangular" id="rectangleRadio">
+                                            <label class="form-check-label" for="rectangleRadio">
                                                 Rectangular
                                             </label>
                                         </div>
                                     </div>
                                 </div>
-                                <label for="exampleFormControlTextarea1" class="form-label"><strong>Please enter
+                                <label for="inputString" class="form-label"><strong>Please enter
                                         article:</strong></label>
                                 <textarea class="form-control" rows="4" placeholder="" id="inputString" required>Australia, officially the Commonwealth of Australia, is a sovereign country comprising the mainland of the Australian continent, the island of Tasmania, and numerous smaller islands.[13] With an area of 7,617,930 square kilometres (2,941,300 sq mi),[14] Australia is the largest country by area in Oceania and the world's sixth-largest country. Australia is the oldest,[15] flattest,[16] and driest inhabited continent,[17][18] with the least fertile soils.[19][20] It is a megadiverse country, and its size gives it a wide variety of landscapes and climates, with deserts in the centre, tropical rainforests in the north-east, and mountain ranges in the south-east.
 
