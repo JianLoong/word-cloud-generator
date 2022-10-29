@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config webpack.config.js"
+    "build": "webpack --config webpack.config.js && http-server"
   },
   "repository": {
     "type": "git",
@@ -22,7 +22,8 @@
     "d3": "^7.6.1",
     "d3-cloud": "^1.2.5",
     "d3-svg-to-png": "^0.2.0",
-    "node-lemmatizer": "^1.0.3"
+    "node-lemmatizer": "^1.0.3",
+    "vanilla-picker": "^2.12.1"
   },
   "devDependencies": {
     "webpack": "^5.74.0",

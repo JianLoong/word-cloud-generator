@@ -82,7 +82,8 @@
                                         Lemmatization
                                     </label>
                                     <div id="lemmatizationHelpBlock" class="form-text">
-                                        <strong class="link-danger">Please note that, lemmatization may take a long time.
+                                        <strong class="link-danger">Please note that, lemmatization may take a long
+                                            time.
                                         </strong>
                                     </div>
                                 </div>
@@ -138,42 +139,77 @@
                                         <div id="numberHelp" class="form-text">The base size of the font</div>
                                     </div>
                                 </div>
+
                                 <div class="mb-3 row">
-                                    <label for="exampleFormControlInput1"
-                                        class="col-sm-2 col-form-label">Colour-Scheme</label>
-                                    <div class="col-sm-10">
-                                        <select class="form-select selectpicker" aria-label="Default select example"
-                                            id="colourScheme" is="ms-dropdown">
-                                            <option value="black" selected>Black - No colour scheme</option>
-                                            <option value="d3.schemeCategory10" data-image="./images/category10.png">
-                                                Category 10</option>
-                                            <option value="d3.schemeAccent" data-image="./images/Accent.png">
-                                                Accent</option>
-                                            <option value="d3.schemePaired" data-image="./images/Paired.png">
-                                                Paired</option>
-                                            <option value="d3.schemeDark2" data-image="./images/dark2.png">Dark 2
-                                            </option>
-                                            <option value="d3.schemeTableau10" data-image="./images/Tableau10.png">
-                                                Tableau 10</option>
-                                            <option value="d3.schemePastel1" data-image="./images/Pastel1.png">Pastel 1
-                                            </option>
-                                            <option value="d3.interpolateBlues" data-image="./images/blues.png">Blues
-                                            </option>
-                                            <option value="d3.interpolateGreens" data-image="./images/Greens.png">Greens
-                                            </option>
-                                            <option value="d3.interpolateCool" data-image="./images/cool.png">Cool
-                                            </option>
-                                            <option value="d3.interpolateCividis" data-image="./images/cividis.png">
-                                                Civids
-                                            </option>
-                                            <option value="d3.interpolateRdGy" data-image="./images/RdGy.png">
-                                                Red Grey
-                                            </option>
 
-                                        </select>
+                                    <div class="col col-sm-2">
+                                        <label for="" class="col-form-label">Colour selection:</label>
                                     </div>
+                                    <div class="col-sm-10">
+                                        <input type="radio" class="btn-check" name="colourGeneration" id="option1" value="singleColour"
+                                            autocomplete="off" checked>
+                                        <label class="btn btn-outline-primary" for="option1">Singe Colour</label>
 
+                                        <input type="radio" class="btn-check" name="colourGeneration" id="option2"
+                                            autocomplete="off" value="presetColourTone">
+                                        <label class="btn btn-outline-primary" for="option2">Preset colour tones</label>
+                                    </div>
                                 </div>
+
+
+                                <div id="singleColourDiv">
+                                    <div class="mb-3 row">
+                                        <div class="col col-sm-2">
+                                            <label for="" class="col-form-label">Colour</label>
+                                        </div>
+                                        <div class="col-sm-10">
+                                            <a href type="text" class="form-control float-end" id="colourPicker"
+                                                aria-describedby="">⠀</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="colourSchemeDiv" class="d-none">
+                                    <div class="mb-3 row">
+                                        <label for="exampleFormControlInput1"
+                                            class="col-sm-2 col-form-label">Colour-Scheme</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-select selectpicker" aria-label="Default select example"
+                                                id="colourScheme" is="ms-dropdown">
+                                                <option value="black" selected>Black - No colour scheme</option>
+                                                <option value="d3.schemeCategory10"
+                                                    data-image="./images/category10.png">
+                                                    Category 10</option>
+                                                <option value="d3.schemeAccent" data-image="./images/Accent.png">
+                                                    Accent</option>
+                                                <option value="d3.schemePaired" data-image="./images/Paired.png">
+                                                    Paired</option>
+                                                <option value="d3.schemeDark2" data-image="./images/dark2.png">Dark 2
+                                                </option>
+                                                <option value="d3.schemeTableau10" data-image="./images/Tableau10.png">
+                                                    Tableau 10</option>
+                                                <option value="d3.schemePastel1" data-image="./images/Pastel1.png">
+                                                    Pastel 1
+                                                </option>
+                                                <option value="d3.interpolateBlues" data-image="./images/blues.png">
+                                                    Blues
+                                                </option>
+                                                <option value="d3.interpolateGreens" data-image="./images/Greens.png">
+                                                    Greens
+                                                </option>
+                                                <option value="d3.interpolateCool" data-image="./images/cool.png">Cool
+                                                </option>
+                                                <option value="d3.interpolateCividis" data-image="./images/cividis.png">
+                                                    Civids
+                                                </option>
+                                                <option value="d3.interpolateRdGy" data-image="./images/RdGy.png">
+                                                    Red Grey
+                                                </option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                
+
                                 <div class="mb-3 row">
                                     <div class="row justify-content-end">
                                         <div class=" col-sm-10">
@@ -187,6 +223,8 @@
                                         </div>
                                     </div>
                                 </div>
+                                </div>
+
                                 <div class="mb-3 row">
                                     <label for="exampleFormControlInput1" class="col-sm-2 col-form-label">No of
                                         Orientation</label>

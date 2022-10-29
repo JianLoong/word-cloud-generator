@@ -1,11 +1,39 @@
-import { select, create, rollups, descending, treemapResquarify } from "d3"
-import *  as chromatic from "d3-scale-chromatic"
+import { select, create, rollups, descending, treemapResquarify } from "d3";
+import * as chromatic from "d3-scale-chromatic";
 import { scaleOrdinal, scaleSequential } from "d3";
-import cloud from "d3-cloud"
-import * as d3ToPng from "d3-svg-to-png"
+import cloud from "d3-cloud";
+import * as d3ToPng from "d3-svg-to-png";
+import Picker from "vanilla-picker";
+
+const colourSelect = () => {
+  const singleColourDiv = document.getElementById("singleColourDiv");
+  const colourSchemeDiv = document.getElementById("colourSchemeDiv");
+
+  const selectedColourGeneration = document.querySelector(
+    'input[name="colourGeneration"]:checked'
+  ).value;
+
+
+  if (document.querySelector('input[name="colourGeneration"]')) {
+    document.querySelectorAll('input[name="colourGeneration"]').forEach((elem) => {
+      elem.addEventListener("change", function (event) {
+        var item = event.target.value;
+        console.log(item);
+        if (item === "singleColour") {
+          colourSchemeDiv.classList.add("d-none");
+          singleColourDiv.classList.remove("d-none");
+          
+        } else {
+          colourSchemeDiv.classList.remove("d-none");
+          singleColourDiv.classList.add("d-none");
+          
+        }
+      });
+    });
+  }
+};
 
 window.onload = (event) => {
-
   if (window.Worker) {
     const textArea = document.getElementById("inputString");
     const button = document.getElementById("run");
@@ -13,44 +41,56 @@ window.onload = (event) => {
     const runningButton = document.getElementById("running");
 
     const divResult = document.querySelector(".div-result");
-    const form = document.querySelector('.needs-validation');
+    const form = document.querySelector(".needs-validation");
+    let selectedColour = "";
 
+    colourSelect();
 
-    const worker = new Worker(new URL('./worker/process.js', import.meta.url));
+    const parent = document.querySelector("#colourPicker");
+    const picker = new Picker({
+      parent: parent,
+      popup: "top",
+      color: "violet",
+    });
+
+    /*
+        You can do what you want with the chosen color using two callbacks: onChange and onDone.
+    */
+    picker.onChange = function (color) {
+      parent.style.background = color.rgbaString;
+      selectedColour = color.rgbString;
+    };
+
+    const worker = new Worker(new URL("./worker/process.js", import.meta.url));
 
     textArea.addEventListener("input", () => {
       if (form.checkValidity()) {
         form.classList.add("was-validated");
         button.classList.remove("disabled");
-      }
-      else {
+      } else {
         form.classList.add("was-validated");
         button.classList.add("disabled");
       }
-    })
+    });
 
     form.addEventListener("input", () => {
       if (form.checkValidity()) {
         form.classList.add("was-validated");
         button.classList.remove("disabled");
-      }
-      else {
+      } else {
         form.classList.add("was-validated");
         button.classList.add("disabled");
       }
-    })
-
+    });
 
     button.addEventListener("click", () => {
-
       const noOfOrientation = document.getElementById("noOfOrientations").value;
       const startAngle = document.getElementById("startAngle").value;
       const endAngle = document.getElementById("endAngle").value;
 
       if (form.checkValidity()) {
         form.classList.add("was-validated");
-      }
-      else {
+      } else {
         form.classList.add("was-validated");
         return;
       }
@@ -99,6 +139,17 @@ window.onload = (event) => {
         return ~~(Math.random() * noOfOrientation) * endAngle - startAngle;
       };
 
+      const selectedColourGeneration = document.querySelector(
+        'input[name="colourGeneration"]:checked'
+      ).value;
+
+      
+
+      let isSingleColour = false;
+
+      if (selectedColourGeneration == "singleColour")
+        isSingleColour = true;
+
       worker.onmessage = (e) => {
         const data = e.data;
         const a = generateCloud(data, {
@@ -109,11 +160,13 @@ window.onload = (event) => {
           fontScale: selectedFontScale,
           rotate: rotateFunction,
           spiral: selectedSpiral,
-          isReverseColourOrdering,
+          isReverseColourOrdering: isReverseColourOrdering,
+          isSingleColour: isSingleColour,
+          color: selectedColour
+
         });
 
         a[0].start();
-
 
         select("#cloud").node().appendChild(a[1].node());
 
@@ -122,7 +175,6 @@ window.onload = (event) => {
         runningButton.classList.add("d-none");
         divResult.classList.remove("d-none");
       };
-
     });
 
     downloadButton.addEventListener("click", () => {
@@ -132,6 +184,12 @@ window.onload = (event) => {
     });
   }
 };
+
+const getSingleColourSchemeDomain = (colour, data) => {
+  for(let d of data){
+    d["color"] = colour;
+  }
+}
 
 const getColourSchemeDomain = (
   colourSchemeString,
@@ -159,30 +217,43 @@ const getColourSchemeDomain = (
       break;
     // Scale sequential
     case "d3.interpolateBlues":
-      colors = scaleSequential(chromatic.interpolateBlues).domain([0, data.length]);
+      colors = scaleSequential(chromatic.interpolateBlues).domain([
+        0,
+        data.length,
+      ]);
       isSequential = true;
       break;
     case "d3.interpolateGreens":
-      colors = scaleSequential(chromatic.interpolateGreens).domain([0, data.length]);
+      colors = scaleSequential(chromatic.interpolateGreens).domain([
+        0,
+        data.length,
+      ]);
       isSequential = true;
       break;
     case "d3.interpolateCool":
-      colors = scaleSequential(chromatic.interpolateCool).domain([0, data.length]);
+      colors = scaleSequential(chromatic.interpolateCool).domain([
+        0,
+        data.length,
+      ]);
       isSequential = true;
       break;
     case "d3.interpolateRdGy":
-      colors = scaleSequential(chromatic.interpolateRdGy).domain([0, data.length]);
+      colors = scaleSequential(chromatic.interpolateRdGy).domain([
+        0,
+        data.length,
+      ]);
       isSequential = true;
       break;
     case "d3.interpolateCividis":
-      colors = scaleSequential(chromatic.interpolateCividis)
-        .domain([0, data.length]);
+      colors = scaleSequential(chromatic.interpolateCividis).domain([
+        0,
+        data.length,
+      ]);
       isSequential = true;
       break;
     default:
       return data;
   }
-
 
   if (isReverseColourOrdering === false) {
     for (let i = 0; i < data.length; i++) {
@@ -224,51 +295,52 @@ const generateCloud = (
     colourScheme = "d3.schemeCategory10",
     spiral = archimedean,
     isReverseColourOrdering = false,
+    isSingleColour = false,
+    color = selectedColour
   } = {}
 ) => {
   const words =
     typeof text === "string" ? text.split(/\W+/g) : Array.from(text);
-  const data =
-    rollups(words, size, (w) => w)
-      .sort(([, a], [, b]) => descending(a, b))
-      .slice(0, maxWords)
-      .map(([key, size]) => ({ text: word(key), size }));
+  const data = rollups(words, size, (w) => w)
+    .sort(([, a], [, b]) => descending(a, b))
+    .slice(0, maxWords)
+    .map(([key, size]) => ({ text: word(key), size }));
 
   // This is for the colour scheme
-  getColourSchemeDomain(colourScheme, data, isReverseColourOrdering);
+  if (isSingleColour === false)
+    getColourSchemeDomain(colourScheme, data, isReverseColourOrdering);
+  else
+    getSingleColourSchemeDomain(color, data);
 
-  const svg =
-    create("svg")
-      .attr("viewBox", [0, 0, width, height])
-      .attr("font-family", fontFamily)
-      .attr("text-anchor", "middle")
-      .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
+  const svg = create("svg")
+    .attr("viewBox", [0, 0, width, height])
+    .attr("font-family", fontFamily)
+    .attr("text-anchor", "middle")
+    .attr("style", "max-width: 100%; height: auto; height: intrinsic;");
 
   const g = svg
     .append("g")
     .attr("transform", `translate(${marginLeft},${marginTop})`);
 
-  const c =
-    cloud()
-      .size([width - marginLeft - marginRight, height - marginTop - marginBottom])
-      .words(data)
-      .padding(padding)
-      .rotate(rotate)
-      .font(fontFamily)
-      .spiral(spiral)
-      .fontSize((d) => Math.sqrt(d.size) * fontScale)
-      .on("word", ({ size, x, y, rotate, text, color }) => {
-        g.append("text")
-          .transition()
-          .duration(500)
-          .style("fill", color)
-          .attr("font-size", size)
-          .attr("transform", `translate(${x},${y}) rotate(${rotate})`)
-          .text(text);
-      });
+  const c = cloud()
+    .size([width - marginLeft - marginRight, height - marginTop - marginBottom])
+    .words(data)
+    .padding(padding)
+    .rotate(rotate)
+    .font(fontFamily)
+    .spiral(spiral)
+    .fontSize((d) => Math.sqrt(d.size) * fontScale)
+    .on("word", ({ size, x, y, rotate, text, color }) => {
+      g.append("text")
+        .transition()
+        .duration(500)
+        .style("fill", color)
+        .attr("font-size", size)
+        .attr("transform", `translate(${x},${y}) rotate(${rotate})`)
+        .text(text);
+    });
 
   //c.start();
-  return [c,svg];
+  return [c, svg];
   //return svg.node();
-}
-
+};
