@@ -295,7 +295,7 @@ const generateCloud = (
   } = {}
 ) => {
   const words =
-    typeof text === "string" ? text.split(/\W+/g) : Array.from(text);
+    typeof text === "string" ? tokenize(text) : Array.from(text);
   const data = rollups(words, size, (w) => w)
     .sort(([, a], [, b]) => descending(a, b))
     .slice(0, maxWords)

@@ -1,6 +1,7 @@
 import { stopWords } from "../wrangling/stopwords";
 import { stemmer } from "../wrangling/PorterStemmer1980";
 import lemmatizer from 'node-lemmatizer';
+import { tokenize } from '@stdlib/nlp-tokenize';
 
 const cleanData = (
   words,
@@ -35,19 +36,19 @@ const transformData = (
 
 const removeStopWords = (str) => {
   let stopWordsSet = new Set(stopWords);
-  let words = str.split(" ");
+  let words = tokenize(str);
   words = words.filter((word) => { return !stopWordsSet.has(word) });
   return words.join(" ");
 };
 
 const stemming = (words) => {
   const res = [];
-  for (let word of words.split(" ")) res.push(stemmer()(word));
+  for (let word of tokenize(words)) res.push(stemmer()(word));
   return res.join(" ");
 }
 
 const lemmatization = (str) => {
-  let words = str.split(" ");
+  let words = tokenize(str);
   const res = [];
   for (let word of words) res.push(lemmatizer.only_lemmas(word)[0]);
   return res.join(" ");
@@ -62,7 +63,7 @@ onmessage = (e) => {
   switch(capitalisation)
   {
     case 'upper': transformedData = transformedData.toUpperCase(); break;
-    case 'firstUpper': transformedData  = transformedData.toLowerCase().split(/\W+/g).map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '); break;
+    case 'firstUpper': transformedData  = tokenize(transformedData.toLowerCase()).map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '); break;
     default: transformedData = transformedData.toLowerCase();
   }
 
