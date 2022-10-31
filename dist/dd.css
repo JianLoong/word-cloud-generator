@@ -138,11 +138,12 @@
     display: none;
     list-style: none;
     margin: 0;
-    overflow: auto;
+    overflow: scroll;
     padding: 0;
     position: absolute;
     width: 100%;
-    z-index: 9999
+    z-index: 9999;
+    height: 20em
 }
 
 .ms-dd .ms-list-option,
