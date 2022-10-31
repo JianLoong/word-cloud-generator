@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/JianLoong/word-cloud-generator#readme",
   "dependencies": {
+    "@stdlib/nlp-tokenize": "^0.0.8",
     "d3": "^7.6.1",
     "d3-cloud": "^1.2.5",
     "d3-svg-to-png": "^0.2.0",
