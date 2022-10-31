@@ -114,13 +114,12 @@ if (window.Worker) {
     const selectedSpiral = document.querySelector(
       'input[name="spiral"]:checked'
     ).value;
+
     const capitalisation = document.querySelector(
       'input[name="capitalisation"]:checked'
     ).value;
-    const words = 
-      capitalisation == 'upper' ? textArea.value.toUpperCase() : 
-      capitalisation == 'firstUpper' ? textArea.value.toLowerCase().split(/\W+/g).map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ') :
-      textArea.value.toLowerCase();
+
+    const words = textArea.value;
 
     const selectedColourGeneration = document.querySelector(
       'input[name="colourGeneration"]:checked'
@@ -131,6 +130,7 @@ if (window.Worker) {
       isRemoveSpecialCharacters,
       isRemoveStopWords,
       selectedTransformationMethodology,
+      capitalisation
     };
 
     worker.postMessage([words, config]);

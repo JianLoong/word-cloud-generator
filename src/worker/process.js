@@ -55,7 +55,16 @@ const lemmatization = (str) => {
 
 onmessage = (e) => {
   const processedData = cleanData(e.data[0], e.data[1]);
-  const transformedData = transformData(processedData, e.data[1]);
+  let transformedData = transformData(processedData, e.data[1]);
+
+  const capitalisation = e.data[1].capitalisation;
+
+  switch(capitalisation)
+  {
+    case 'upper': transformedData = transformedData.toUpperCase(); break;
+    case 'firstUpper': transformedData  = transformedData.toLowerCase().split(/\W+/g).map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '); break;
+    default: transformedData = transformedData.toLowerCase();
+  }
 
   postMessage(transformedData);
 };
