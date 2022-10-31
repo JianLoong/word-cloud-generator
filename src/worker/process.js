@@ -1,7 +1,7 @@
 import { stopWords } from "../wrangling/stopwords";
 import { stemmer } from "../wrangling/PorterStemmer1980";
 import lemmatizer from 'node-lemmatizer';
-import { tokenize } from '@stdlib/nlp-tokenize';
+import tokenize from '@stdlib/nlp-tokenize';
 
 const cleanData = (
   words,
