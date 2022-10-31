@@ -10,20 +10,20 @@ const colourSelect = () => {
   const colourSchemeDiv = document.getElementById("colourSchemeDiv");
 
   if (document.querySelector('input[name="colourGeneration"]')) {
-    document.querySelectorAll('input[name="colourGeneration"]').forEach((elem) => {
-      elem.addEventListener("change", function (event) {
-        var item = event.target.value;
-        if (item === "singleColour") {
-          colourSchemeDiv.classList.add("d-none");
-          singleColourDiv.classList.remove("d-none");
-
-        } else {
-          colourSchemeDiv.classList.remove("d-none");
-          singleColourDiv.classList.add("d-none");
-
-        }
+    document
+      .querySelectorAll('input[name="colourGeneration"]')
+      .forEach((elem) => {
+        elem.addEventListener("change", function (event) {
+          var item = event.target.value;
+          if (item === "singleColour") {
+            colourSchemeDiv.classList.add("d-none");
+            singleColourDiv.classList.remove("d-none");
+          } else {
+            colourSchemeDiv.classList.remove("d-none");
+            singleColourDiv.classList.add("d-none");
+          }
+        });
       });
-    });
   }
 };
 
@@ -108,8 +108,7 @@ if (window.Worker) {
     ).value;
     const selectedFontFamily = document.getElementById("fontFamily").value;
     const selectedFontScale = document.getElementById("fontScale").value;
-    const selectedColourScheme =
-      document.getElementById("colourScheme").value;
+    const selectedColourScheme = document.getElementById("colourScheme").value;
 
     const selectedSpiral = document.querySelector(
       'input[name="spiral"]:checked'
@@ -130,7 +129,7 @@ if (window.Worker) {
       isRemoveSpecialCharacters,
       isRemoveStopWords,
       selectedTransformationMethodology,
-      capitalisation
+      capitalisation,
     };
 
     worker.postMessage([words, config]);
@@ -142,8 +141,7 @@ if (window.Worker) {
 
     let isSingleColour = false;
 
-    if (selectedColourGeneration == "singleColour")
-      isSingleColour = true;
+    if (selectedColourGeneration == "singleColour") isSingleColour = true;
 
     worker.onmessage = (e) => {
       const data = e.data;
@@ -157,8 +155,7 @@ if (window.Worker) {
         spiral: selectedSpiral,
         isReverseColourOrdering: isReverseColourOrdering,
         isSingleColour: isSingleColour,
-        color: selectedColour
-
+        color: selectedColour,
       });
 
       a[0].start();
@@ -179,12 +176,11 @@ if (window.Worker) {
   });
 }
 
-
 const getSingleColourSchemeDomain = (colour, data) => {
   for (let d of data) {
     d["color"] = colour;
   }
-}
+};
 
 const getColourSchemeDomain = (
   colourSchemeString,
@@ -210,7 +206,10 @@ const getColourSchemeDomain = (
     case "d3.schemePaired":
       colors = scaleOrdinal(chromatic.schemePaired).domain(data);
       break;
-    // Scale sequential
+    case "d3.schemePastel1":
+      colors = scaleOrdinal(chromatic.schemePastel1).domain(data);
+      break;
+    // Scale sequentialn
     case "d3.interpolateBlues":
       colors = scaleSequential(chromatic.interpolateBlues).domain([
         0,
@@ -246,6 +245,56 @@ const getColourSchemeDomain = (
       ]);
       isSequential = true;
       break;
+	case "d3.interpolatePurples":
+	  colors = scaleSequential(chromatic.interpolatePurples).domain([
+	    0,
+	    data.length,
+	  ]);
+	  isSequential = true;
+	  break;
+	case "d3.interpolateOranges":
+	  colors = scaleSequential(chromatic.interpolateOranges).domain([
+	    0,
+	    data.length,
+	  ]);
+	  isSequential = true;
+	  break;
+	case "d3.interpolateOranges":
+	  colors = scaleSequential(chromatic.interpolateOranges).domain([
+	    0,
+	    data.length,
+	  ]);
+	  isSequential = true;
+	  break;
+	case "d3.interpolateMagma":
+	colors = scaleSequential(chromatic.interpolateMagma).domain([
+	    0,
+	    data.length,
+	  ]);
+	  isSequential = true;
+	  break;
+    //Scale diverging
+	case "d3.interpolateBrBG":
+	colors = scaleSequential(chromatic.interpolateBrBG).domain([
+	    0,
+	    data.length,
+	  ]);
+	  isSequential = true;
+	  break;
+	case "d3.interpolatePuOr":
+	colors = scaleSequential(chromatic.interpolatePuOr).domain([
+	    0,
+	    data.length,
+	  ]);
+	  isSequential = true;
+	  break;
+	case "d3.interpolateRdBu":
+	colors = scaleSequential(chromatic.interpolateRdBu).domain([
+	    0,
+	    data.length,
+	  ]);
+	  isSequential = true;
+	  break;
     default:
       return data;
   }
@@ -291,7 +340,7 @@ const generateCloud = (
     spiral = archimedean,
     isReverseColourOrdering = false,
     isSingleColour = false,
-    color = selectedColour
+    color = selectedColour,
   } = {}
 ) => {
   const words =
@@ -304,8 +353,7 @@ const generateCloud = (
   // This is for the colour scheme
   if (isSingleColour === false)
     getColourSchemeDomain(colourScheme, data, isReverseColourOrdering);
-  else
-    getSingleColourSchemeDomain(color, data);
+  else getSingleColourSchemeDomain(color, data);
 
   const svg = create("svg")
     .attr("viewBox", [0, 0, width, height])
