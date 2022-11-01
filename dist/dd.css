@@ -139,6 +139,7 @@
     list-style: none;
     margin: 0;
     overflow: scroll;
+    overflow-x: hidden;
     padding: 0;
     position: absolute;
     width: 100%;
