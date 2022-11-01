@@ -1,9 +1,14 @@
-import { select, create, rollups, descending, treemapResquarify } from "d3";
+import { select, create, rollups, descending } from "d3";
 import * as chromatic from "d3-scale-chromatic";
 import { scaleOrdinal, scaleSequential } from "d3";
 import cloud from "d3-cloud";
 import * as d3ToPng from "d3-svg-to-png";
 import Picker from "vanilla-picker";
+import isMobile from "is-mobile";
+import "ms-dropdown"
+
+if (!isMobile())
+  new MsDropdown('.colourScheme');
 
 const colourSelect = () => {
   const singleColourDiv = document.getElementById("singleColourDiv");
@@ -26,6 +31,8 @@ const colourSelect = () => {
       });
   }
 };
+
+
 
 if (window.Worker) {
   const textArea = document.getElementById("inputString");
@@ -245,56 +252,56 @@ const getColourSchemeDomain = (
       ]);
       isSequential = true;
       break;
-	case "d3.interpolatePurples":
-	  colors = scaleSequential(chromatic.interpolatePurples).domain([
-	    0,
-	    data.length,
-	  ]);
-	  isSequential = true;
-	  break;
-	case "d3.interpolateOranges":
-	  colors = scaleSequential(chromatic.interpolateOranges).domain([
-	    0,
-	    data.length,
-	  ]);
-	  isSequential = true;
-	  break;
-	case "d3.interpolateOranges":
-	  colors = scaleSequential(chromatic.interpolateOranges).domain([
-	    0,
-	    data.length,
-	  ]);
-	  isSequential = true;
-	  break;
-	case "d3.interpolateMagma":
-	colors = scaleSequential(chromatic.interpolateMagma).domain([
-	    0,
-	    data.length,
-	  ]);
-	  isSequential = true;
-	  break;
+    case "d3.interpolatePurples":
+      colors = scaleSequential(chromatic.interpolatePurples).domain([
+        0,
+        data.length,
+      ]);
+      isSequential = true;
+      break;
+    case "d3.interpolateOranges":
+      colors = scaleSequential(chromatic.interpolateOranges).domain([
+        0,
+        data.length,
+      ]);
+      isSequential = true;
+      break;
+    case "d3.interpolateOranges":
+      colors = scaleSequential(chromatic.interpolateOranges).domain([
+        0,
+        data.length,
+      ]);
+      isSequential = true;
+      break;
+    case "d3.interpolateMagma":
+      colors = scaleSequential(chromatic.interpolateMagma).domain([
+        0,
+        data.length,
+      ]);
+      isSequential = true;
+      break;
     //Scale diverging
-	case "d3.interpolateBrBG":
-	colors = scaleSequential(chromatic.interpolateBrBG).domain([
-	    0,
-	    data.length,
-	  ]);
-	  isSequential = true;
-	  break;
-	case "d3.interpolatePuOr":
-	colors = scaleSequential(chromatic.interpolatePuOr).domain([
-	    0,
-	    data.length,
-	  ]);
-	  isSequential = true;
-	  break;
-	case "d3.interpolateRdBu":
-	colors = scaleSequential(chromatic.interpolateRdBu).domain([
-	    0,
-	    data.length,
-	  ]);
-	  isSequential = true;
-	  break;
+    case "d3.interpolateBrBG":
+      colors = scaleSequential(chromatic.interpolateBrBG).domain([
+        0,
+        data.length,
+      ]);
+      isSequential = true;
+      break;
+    case "d3.interpolatePuOr":
+      colors = scaleSequential(chromatic.interpolatePuOr).domain([
+        0,
+        data.length,
+      ]);
+      isSequential = true;
+      break;
+    case "d3.interpolateRdBu":
+      colors = scaleSequential(chromatic.interpolateRdBu).domain([
+        0,
+        data.length,
+      ]);
+      isSequential = true;
+      break;
     default:
       return data;
   }
@@ -387,3 +394,4 @@ const generateCloud = (
   return [c, svg];
   //return svg.node();
 };
+

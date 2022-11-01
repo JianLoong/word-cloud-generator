@@ -23,6 +23,8 @@
     "d3": "^7.6.1",
     "d3-cloud": "^1.2.5",
     "d3-svg-to-png": "^0.2.0",
+    "is-mobile": "^3.1.1",
+    "ms-dropdown": "^4.0.3",
     "node-lemmatizer": "^1.0.3",
     "vanilla-picker": "^2.12.1"
   },
