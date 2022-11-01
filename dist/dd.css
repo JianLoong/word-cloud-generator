@@ -47,13 +47,14 @@
 }
 
 .ms-dd .ms-dd-header {
-    border: 1px solid #ccc;
-    border-bottom: none;
+    /* border: 1px solid #ccc;
+    border-bottom: none; */
     border-radius: 2px;
     cursor: pointer;
-    min-height: 35px;
+    /* min-height: 35px; */
     position: relative;
-    width: 100%
+    width: 100%;
+    border-radius: 0.375rem;
 }
 
 .ms-dd .ms-dd-header .option-selected {
