@@ -22,7 +22,7 @@
 .ms-dd {
     background: #eee;
     display: inline-block;
-    font-family: Sans-Serif;
+    font-family: -apple-system !important, system-ui !important, sans-serif;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
