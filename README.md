@@ -1,6 +1,6 @@
 # Demo
 
-Found [here](https://jianliew.me/word-cloud-generator)
+Found [here](https://jian.sh/word-cloud-generator)
 
 
 # Word Cloud Generator
